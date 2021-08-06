@@ -4,6 +4,8 @@ import os
 import json
 import random
 
+_id = 873267392233492481
+
 def findPrefix(client, message):
     with open ("prefixes.json", "r") as f:
         prefixes = json.load(f)
@@ -24,16 +26,18 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
-async def _customVC(ctx, id=int):
-    channel = client.get_channel(873267392233492481)
-    while True:
-        for user in channel.members:
-            new_channel = await ctx.message.guild.create_voice_channel(name="NEW CUSTOM CHANNEL")
-            user.move(new_channel)
+@client.event
+async def on_voice_state_update(member, before, after):
+    custom_channel_category = client.get_channel(873294766916386817)
+    if not before.channel and after.channel:
+        if after.channel.id == _id:
+            new_channel = await member.guild.create_voice_channel(name=f"{member.display_name}\'s Channel", category=custom_channel_category)
+            await member.move_to(new_channel)
 
 @client.event
 async def on_ready():
     f=open("prefixes.json", "a+")
+    f.close()
     print(f"Bot online as {client.user}.")
 
 @client.event
