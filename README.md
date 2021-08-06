@@ -7,5 +7,5 @@ For Genty's safety, the token is stored in a file ".env" which is accessed at ru
 
 ## Prefixes
 
-Genty stores individual prefixes for each guild in a json file. Upon joining a guild, Genty sets the default prefix at '%'. This can be changed later and will be updated in the bots memory permanently. When Genty is removed from a guild, it will wipe it's memory of a guild's prefix.
+Genty stores individual prefixes for each guild in a json file. Upon joining a guild, Genty sets the default prefix as '%'. This can be changed later and will be updated in the bots memory. When Genty is removed from a guild, it will wipe its memory of a guild's prefix.
 
