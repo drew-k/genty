@@ -24,6 +24,13 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
+async def _customVC(ctx, id=int):
+    channel = client.get_channel(873267392233492481)
+    while True:
+        for user in channel.members:
+            new_channel = await ctx.message.guild.create_voice_channel(name="NEW CUSTOM CHANNEL")
+            user.move(new_channel)
+
 @client.event
 async def on_ready():
     f=open("prefixes.json", "a+")
