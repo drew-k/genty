@@ -3,7 +3,7 @@
 Genty is a general-purpose Discord bot with a wide variety of functionality.
 
 ## Token
-For Genty's safety, the token is stored in a file ".env" which is accessed at runtime.
+For Genty's safety, the token is stored in a file ".env" which is accessed at runtime. Anyone who wishes to create their own version of Genty will have to create the same file (in the same directory) to store the token with the key "TOKEN".
 
 ## Prefixes
 
