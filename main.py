@@ -33,6 +33,8 @@ async def on_voice_state_update(member, before, after):
         if after.channel.id == _id:
             new_channel = await member.guild.create_voice_channel(name=f"{member.display_name}\'s Channel", category=custom_channel_category)
             await member.move_to(new_channel)
+    elif before.channel and not after.channel:
+        await before.channel.delete()
 
 @client.event
 async def on_ready():
