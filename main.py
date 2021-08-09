@@ -38,7 +38,7 @@ async def _name(ctx, nm: str=None):
                 await ctx.author.voice.channel.edit(name=nm)
 
 @client.command(name="limit", pass_context=True)
-async def _limit(ctx, num=int):
+async def _limit(ctx, num: int=0):
     with open ("channels.json", "r") as f:
         channels = json.load(f)
     if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
