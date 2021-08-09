@@ -26,6 +26,25 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
+@client.command(name="name", pass_context=True)
+async def _name(ctx, nm: str=None):
+    with open ("channels.json", "r") as f:
+        channels = json.load(f)
+    if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
+        if channels[str(ctx.author.voice.channel.id)] == ctx.author.id:
+            if nm == None:
+                await ctx.author.voice.channel.edit(name=f"{ctx.author.display_name}'s Custom Channel")
+            else:
+                await ctx.author.voice.channel.edit(name=nm)
+
+@client.command(name="limit", pass_context=True)
+async def _limit(ctx, num=int):
+    with open ("channels.json", "r") as f:
+        channels = json.load(f)
+    if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
+        if channels[str(ctx.author.voice.channel.id)] == ctx.author.id:
+            await ctx.author.voice.channel.edit(user_limit=num)
+
 @client.command(name="lock", pass_context=True)
 async def _lock(ctx):
     with open ("channels.json", "r") as f:
@@ -90,6 +109,7 @@ async def on_voice_state_update(member, before, after):
 @client.event
 async def on_ready():
     f=open("channels.json", "a+")
+    f.close()
     f=open("prefixes.json", "a+")
     f.close()
     print(f"Bot online as {client.user}.")
