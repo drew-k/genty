@@ -33,7 +33,7 @@ async def _name(ctx, nm: str=None):
     if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
         if channels[str(ctx.author.voice.channel.id)] == ctx.author.id:
             if nm == None:
-                await ctx.author.voice.channel.edit(name=f"{ctx.author.display_name}'s Custom Channel")
+                await ctx.author.voice.channel.edit(name=f"{ctx.author.display_name}'s Channel")
             else:
                 await ctx.author.voice.channel.edit(name=nm)
 
@@ -93,7 +93,6 @@ async def on_voice_state_update(member, before, after):
                 json.dump(channels, f, indent=4)
             except:
                 None
-
     # Deletes any empty custom VCs
     with open ("channels.json", "r") as f:
         channels = json.load(f)
