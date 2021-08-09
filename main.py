@@ -34,7 +34,7 @@ async def on_voice_state_update(member, before, after):
             new_channel = await member.guild.create_voice_channel(
                 name=f"{member.display_name}\'s Channel",
                 category=custom_channel_category,
-                position = 0)
+                position = 1)
             await member.move_to(new_channel)
             f = open("channels.json", "a+")
             f.close()
