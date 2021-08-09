@@ -26,9 +26,26 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
+@client.command(name="lock", pass_context=True)
+async def _lock(ctx):
+    with open ("channels.json", "r") as f:
+        channels = json.load(f)
+    if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
+        if channels[str(ctx.author.voice.channel.id)] == ctx.author.id:
+            await ctx.author.voice.channel.set_permissions(ctx.guild.default_role, connect=False)
+
+@client.command(name="unlock", pass_context=True)
+async def _unlock(ctx):
+    with open("channels.json", "r") as f:
+        channels = json.load(f)
+    if ctx.author.voice != None and str(ctx.author.voice.channel.id) in channels:
+        if channels[str(ctx.author.voice.channel.id)] == ctx.author.id:
+            await ctx.author.voice.channel.set_permissions(ctx.guild.default_role, connect=True)
+
 @client.event
 async def on_voice_state_update(member, before, after):
     custom_channel_category = client.get_channel(873294766916386817)
+    # Creates VCs
     if not before.channel and after.channel:
         if after.channel.id == _id:
             new_channel = await member.guild.create_voice_channel(
@@ -36,8 +53,6 @@ async def on_voice_state_update(member, before, after):
                 category=custom_channel_category,
                 position = 1)
             await member.move_to(new_channel)
-            f = open("channels.json", "a+")
-            f.close()
             with open ("channels.json", "r") as f:
                 try:
                     channels = json.load(f)
@@ -46,9 +61,8 @@ async def on_voice_state_update(member, before, after):
             with open ("channels.json", "w") as f:
                 channels[str(new_channel.id)] = member.id
                 json.dump(channels, f, indent=4)
+    # Deletes VCs
     elif before.channel and not after.channel:
-        f = open("channels.json", "a+")
-        f.close()
         with open ("channels.json", "r") as f:
             channels = json.load(f)
         with open ("channels.json", "w") as f:
@@ -61,9 +75,21 @@ async def on_voice_state_update(member, before, after):
             except:
                 None
 
+    # Deletes any empty custom VCs
+    with open ("channels.json", "r") as f:
+        channels = json.load(f)
+    for channel in member.guild.channels:
+        if channel.type == discord.ChannelType.voice:
+            if channel.members == []:
+                if str(channel.id) in channels:
+                    await channel.delete()
+                    channels.pop(str(channel.id))
+                    with open("channels.json", "w") as f:
+                        json.dump(channels, f, indent=4)
 
 @client.event
 async def on_ready():
+    f=open("channels.json", "a+")
     f=open("prefixes.json", "a+")
     f.close()
     print(f"Bot online as {client.user}.")
