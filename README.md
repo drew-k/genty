@@ -13,6 +13,6 @@ Genty stores individual prefixes for each guild in a json file. Upon joining a g
 
 In the future, Genty will be able to help mods easily keep track of threads created by users about server issues.
 
-## Custom VCs [IN DEVELOPEMENT]
+## Custom VCs
 
-While still in developement, Genty will soon be able to handle creating custom voice channels for users upon demand, with deletion when their use is complete.
+Genty is able to easily setup a button that let's anyone create their own, personal, custom voice channel where they have the ability to change important parts of a voice channel, including the name, user limit, and the access.
