@@ -24,6 +24,18 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
+@client.command(name="kick", pass_context=True)
+async def _kickUser(ctx, user):
+    if ctx.message.mentions.__len__() > 0:
+        for user in ctx.message.mentions:
+            await user.kick()
+
+@client.command(name="ban", pass_context=True)
+async def _banUser(ctx, user):
+    if ctx.message.mentions.__len__() > 0:
+        for user in ctx.message.mentions:
+            await user.ban()
+
 @client.command(name="setup", pass_context=True)
 async def _vcsetup(ctx):
     custom_category = await ctx.guild.create_category(
