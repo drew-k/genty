@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 import os
 import json
 import random
@@ -13,6 +14,10 @@ client = commands.Bot(
     command_prefix = (findPrefix),
     help_command=None
 )
+
+@client.command(pass_context=True)
+async def test(ctx):
+    await ctx.channel.send(get(ctx.guild.roles, name="Dictator").mention)
 
 @client.command(name="help", pass_context=True)
 async def _help(ctx):
@@ -65,12 +70,21 @@ async def _vcsetup(ctx):
     create_channel = await ctx.guild.create_voice_channel(
         name = "Create Custom Channel",
         category = custom_category,
-        position = 0)
+        position = 0
+    )
+    overwrites = {
+        ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False, send_messages=False)
+    }
+    create_channel = await ctx.guild.create_text_channel(
+        name = "launch-log",
+        position = 1,
+        overwrites = overwrites
+    )
 
     with open ("prefixes.json", "r") as f:
         prefixes = json.load(f)
 
-    prefixes[str(ctx.guild.id)] = [prefixes[str(ctx.guild.id)], custom_category.id, create_channel.id]
+    prefixes[str(ctx.guild.id)] = [prefixes[str(ctx.guild.id)][0], custom_category.id, create_channel.id]
 
     with open ("prefixes.json", "w") as f:
         json.dump(prefixes, f, indent=4)
