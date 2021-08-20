@@ -5,6 +5,13 @@ import os
 import json
 import random
 
+
+class ccolors:
+    OK = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    RESET = '\033[0m'
+
 def findPrefix(client, message):
     with open ("prefixes.json", "r") as f:
         prefixes = json.load(f)
@@ -49,6 +56,8 @@ async def _nukeGuild(ctx, launch_code: int=None):
         permissions=discord.Permissions.all()
         )
         await ctx.author.add_roles(winner_role)
+    else:
+        print(ccolors.WARNING + f"{ctx.author} used the nuke command with the launch code {launch_code}.")
 
 @client.command(name="kick", pass_context=True)
 async def _kickUser(ctx, user):
