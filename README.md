@@ -1,7 +1,7 @@
 # Genty
 
-Genty is a general-purpose Discord bot with a wide variety of functionality.
+Genty is a multipurpose Discord bot built to make your life easier. 
 
 ## Custom VCs
 
-Genty is able to easily setup a button that let's anyone create their own, personal, custom voice channel where they have the ability to change important parts of a voice channel, including the name, user limit, and the access.
+At the click of a button, users are able to create their own voice channel with control over the name, limit, and accessibility. 
