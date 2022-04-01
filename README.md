@@ -49,7 +49,7 @@ python bot.py
 
 ## Updating
 
-To update,
+To update:
 
 ```text
 git pull origin master
