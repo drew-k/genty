@@ -31,7 +31,11 @@ Or, if you want to install required packages alone
 
 ```text
 pip install disnake
+```
+```text
 pip install python-dotenv
+```
+```text
 pip install youtube_dl
 ```
 
@@ -42,8 +46,10 @@ TOKEN=[your token here]
 ```
 
 Start the bot
-```
+```text
 cd src
+```
+```text
 python bot.py
 ```
 
