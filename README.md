@@ -18,13 +18,13 @@ To self-host, you will need the following:
 Clone repository
 
 ```text
-git clone https://github.com/drew-k/genty.git
+> git clone https://github.com/drew-k/genty.git
 ```
 
 Install modules in requirements.txt
 
 ```text
-pip install -r requirements.txt
+> pip install -r requirements.txt
 ```
 
 Place your token in an environment variable (.env) with the following syntax:
@@ -35,8 +35,8 @@ TOKEN=[your_token_here]
 
 Start the bot
 ```text
-cd src
-python bot.py
+> cd src
+> python bot.py
 ```
 
 ## Updating
@@ -44,7 +44,7 @@ python bot.py
 To update:
 
 ```text
-git pull origin master
+> git pull origin master
 ```
 
 ## Finding your Token
