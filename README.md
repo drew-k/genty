@@ -6,10 +6,10 @@ Multipurpose Discord bot built to make your life easier.
 
 To self-host, you will need the following:
 
-*[python](https://www.python.org/downloads/)
-*[git](https://git-scm.com/downloads)
-*[disnake](https://github.com/DisnakeDev/disnake)
-*[python-dotenv](https://github.com/theskumar/python-dotenv)
+* [python](https://www.python.org/downloads/)
+* [git](https://git-scm.com/downloads)
+* [disnake](https://github.com/DisnakeDev/disnake)
+* [python-dotenv](https://github.com/theskumar/python-dotenv)
 
 **python** comes preinstalled on some operating systems.
 
@@ -35,7 +35,7 @@ pip install python-dotenv
 pip install youtube_dl
 ```
 
-Place your token in an environment variable (.env) with the following syntax
+Place your token in an environment variable (.env) with the following syntax:
 
 ```text
 TOKEN=[your token here]
@@ -60,9 +60,9 @@ Go to the [Discord Application Page](https://discord.com/developers/applications
 go to the `Bot` tab and find your token (should be under your Bot name). Next, navigate to the `OAuth2` tab and 
 check the following:
 
-*bot
-*applications.commands
-*Administrator
+* bot
+* applications.commands
+* Administrator
 
 ## Usage
 
@@ -76,7 +76,7 @@ List of commands:
 | /wipe <n>               | `ADMINISTRATOR`  | Deletes 'n' messages                 |
 | /uptime                 | Bot Owner        | Gets the current uptime of the bot   |
 
-Commands in `src/extensions/custom_vc.py`
+Commands in `src/extensions/custom_vc.py`:
 
 | Command                 | Permission       | Description                                                               |
 |-------------------------|------------------|---------------------------------------------------------------------------|
