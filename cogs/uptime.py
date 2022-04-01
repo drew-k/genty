@@ -18,4 +18,4 @@ class Uptime(commands.Cog):
 
 def setup(client):
     client.add_cog(Uptime(client))
-    printf(f"> Loaded {__name__}")
+    print(f"> Loaded {__name__}")
