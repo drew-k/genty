@@ -8,7 +8,7 @@ class SlashCommands(commands.Cog):
     self.startup_time = datetime.now().replace(microsecond=0) # used in the uptime command
 
   @commands.slash_command(description="Unload an extension")
-  @commands.has_permissions(administrator=True)
+  @commands.is_owner()
   async def unload(self, inter: disnake.ApplicationCommandInteraction, path: str):
     """ Unload a cog from the bot """
     try:
@@ -18,7 +18,7 @@ class SlashCommands(commands.Cog):
       await inter.response.send_message(content=f"Extension \"{path}\" not loaded or was not able to be found.", ephemeral=True)
 
   @commands.slash_command(description="Load an extension")
-  @commands.has_permissions(administrator=True)
+  @commands.is_owner()
   async def load(self, inter: disnake.ApplicationCommandInteraction, path: str):
     """ Load a cog into the bot """
     try:
@@ -28,8 +28,8 @@ class SlashCommands(commands.Cog):
      await inter.response.send_message(content=f"Extension \"{path}\" already loaded or was not able to be found.", ephemeral=True)
 
   @commands.slash_command(description="Reload an extension")
-  @commands.has_permissions(administrator=True)
-  async def reload(self, inter: disnake.ApplicationCommandInteraction, path: str):
+  @commands.is_owner()
+  async def reload(self, inter : disnake.ApplicationCommandInteraction, path : str):
     """ Reload a cog into the bot """
     try:
       self.bot.reload_extension(path)
@@ -49,7 +49,7 @@ class SlashCommands(commands.Cog):
     await inter.response.send_message(content=f"{n} messages deleted.", ephemeral=True)
 
   @commands.slash_command(description="Get the current bot uptime.")
-  @commands.has_permissions(administrator=True)
+  @commands.is_owner()
   async def uptime(self, inter: disnake.ApplicationCommandInteraction):
     """ Outputs the current uptime of the bot """
     current_time = datetime.now().replace(microsecond=0)
