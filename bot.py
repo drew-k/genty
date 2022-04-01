@@ -1,6 +1,9 @@
 import disnake
 from disnake.ext import commands
 import os
+from dotenv import load_dotenv
+
+load_dotenv() # load the environment variable
 
 class Format():
   """ Console output format options """
@@ -22,6 +25,7 @@ class Bot(commands.Bot):
     )
 
   def init_cogs(self, folder: str) -> None:
+      """ Initializes cogs in the provided folder """
       for file in os.listdir(folder):
           if file.endswith(".py"):
               self.load_extension(f"{folder}.{file[:-3]}")
