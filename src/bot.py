@@ -24,7 +24,6 @@ class Bot(commands.Bot):
       sync_commands_debug=True,
       sync_permissions=True,
     )
-    self.startup_time = datetime.now().replace(microsecond=0) # used in the uptime command
 
   def init_cogs(self, folder: str) -> None:
       """ Initialize cogs in provided folder """
