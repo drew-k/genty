@@ -1,6 +1,5 @@
 import disnake
 from disnake.ext import commands
-from datetime import datetime
 
 
 class SlashCommands(commands.Cog):
