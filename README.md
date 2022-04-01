@@ -36,8 +36,6 @@ TOKEN=[your_token_here]
 Start the bot
 ```text
 cd src
-```
-```text
 python bot.py
 ```
 
