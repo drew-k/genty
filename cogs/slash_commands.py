@@ -2,10 +2,10 @@ import disnake
 from disnake.ext import commands
 from datetime import datetime
 
+
 class SlashCommands(commands.Cog):
   def __init__(self, bot):
     self.bot:commands.Bot = bot
-    self.startup_time = datetime.now().replace(microsecond=0) # used in the uptime command
 
   @commands.slash_command(description="Unload an extension")
   @commands.is_owner()
@@ -47,13 +47,6 @@ class SlashCommands(commands.Cog):
     """ Deletes 'n' messages from a channel """
     await inter.channel.purge(limit=n)
     await inter.response.send_message(content=f"{n} messages deleted.", ephemeral=True)
-
-  @commands.slash_command(description="Get the current bot uptime.")
-  @commands.is_owner()
-  async def uptime(self, inter: disnake.ApplicationCommandInteraction):
-    """ Outputs the current uptime of the bot """
-    current_time = datetime.now().replace(microsecond=0)
-    await inter.response.send_message(content=f"Bot has been online for {current_time-self.startup_time}.", ephemeral=True)
 
 def setup(client):
   client.add_cog(SlashCommands(client))
