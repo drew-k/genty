@@ -10,7 +10,7 @@ class SlashCommands(commands.Cog):
   @commands.slash_command(description="Unload an extension")
   @commands.is_owner()
   async def unload(self, inter: disnake.ApplicationCommandInteraction, path: str):
-    """ Unload a cog from the bot """
+    """ Unload an extension """
     try:
       self.bot.unload_extension(path)
       await inter.response.send_message(content=f"{path} was unloaded.", ephemeral=True)
@@ -20,7 +20,7 @@ class SlashCommands(commands.Cog):
   @commands.slash_command(description="Load an extension")
   @commands.is_owner()
   async def load(self, inter: disnake.ApplicationCommandInteraction, path: str):
-    """ Load a cog into the bot """
+    """ Load an extension """
     try:
       self.bot.load_extension(path)
       await inter.response.send_message(content=f"{path} was loaded.", ephemeral=True)
@@ -30,7 +30,7 @@ class SlashCommands(commands.Cog):
   @commands.slash_command(description="Reload an extension")
   @commands.is_owner()
   async def reload(self, inter : disnake.ApplicationCommandInteraction, path : str):
-    """ Reload a cog into the bot """
+    """ Reload an extension """
     try:
       self.bot.reload_extension(path)
       await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
@@ -44,7 +44,7 @@ class SlashCommands(commands.Cog):
   @commands.slash_command(description="Clear n messages")
   @commands.has_permissions(administrator=True)
   async def wipe(self, inter: disnake.ApplicationCommandInteraction, n: int):
-    """ Deletes 'n' messages from a channel """
+    """ Delete 'n' messages """
     await inter.channel.purge(limit=n)
     await inter.response.send_message(content=f"{n} messages deleted.", ephemeral=True)
 

@@ -11,7 +11,7 @@ class Uptime(commands.Cog):
     @commands.slash_command(description="Get the current bot uptime.")
     @commands.is_owner()
     async def uptime(self, inter: disnake.ApplicationCommandInteraction):
-        """ Outputs the current uptime of the bot """
+        """ Output the current uptime """
         current_time = datetime.now().replace(microsecond=0)
         await inter.response.send_message(content=f"Bot has been online for {current_time-self.startup_time}.", ephemeral=True)
 

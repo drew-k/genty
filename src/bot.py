@@ -27,7 +27,7 @@ class Bot(commands.Bot):
     self.startup_time = datetime.now().replace(microsecond=0) # used in the uptime command
 
   def init_cogs(self, folder: str) -> None:
-      """ Initializes cogs in the provided folder """
+      """ Initialize cogs in provided folder """
       for file in os.listdir(folder):
           if file.endswith(".py"):
               self.load_extension(f"{folder}.{file[:-3]}")

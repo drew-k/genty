@@ -17,7 +17,7 @@ class Custom_VC(commands.Cog):
 
   @commands.slash_command(description = "Whitelist a user to join your voice channel")
   async def whitelist(self, inter : disnake.ApplicationCommandInteraction, user : disnake.Member):
-    """ Whitelists a user in the caller's custom voice channel """
+    """ Whitelist a user """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -30,7 +30,7 @@ class Custom_VC(commands.Cog):
 
   @commands.slash_command(description = "Blacklist a user from joining your voice channel")
   async def blacklist(self, inter : disnake.ApplicationCommandInteraction, user : disnake.Member):
-    """ Blacklists a user from the caller's custom voice channel """
+    """ Blacklist a user """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -40,10 +40,10 @@ class Custom_VC(commands.Cog):
           await inter.response.send_message(content=f"{user.display_name} is now blacklisted.", ephemeral=True)
     if not inter.response.is_done():
       await inter.response.send_message(content=f"Failed to blacklist {user.display_name}.", ephemeral=True)
-  
+
   @commands.slash_command(description = "Limit the number of users in a custom voice channel.")
   async def limit(self, inter : disnake.ApplicationCommandInteraction, users : int = 0):
-    """ Sets a limit to the custom voice channel of the caller, giving no value for users resets the limit """
+    """ Set a user limit on the custom voice channel """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -51,10 +51,10 @@ class Custom_VC(commands.Cog):
           await inter.response.send_message(content="Voice channel user limit successfully applied.", ephemeral=True)
     if not inter.response.is_done():
       await inter.response.send_message(content="Failed to set user limit", ephemeral=True)
-  
+
   @commands.slash_command(description="Change the name of a custom voice channel.")
   async def rename(self, inter : disnake.ApplicationCommandInteraction, name : str = None):
-    """ Renames the custom voice channel of the caller, giving no value for name resets the name """
+    """ Rename custom voice channel """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -65,10 +65,10 @@ class Custom_VC(commands.Cog):
           await inter.response.send_message(content="Channel successfully renamed.", ephemeral=True)
     if not inter.response.is_done():
       await inter.response.send_message(content="Failed to rename voice channel.", ephemeral=True)
-    
+
   @commands.slash_command(description="Lock custom voice channel")
   async def lock(self, inter : disnake.ApplicationCommandInteraction):
-    """ Locks the custom voice channel of the caller """
+    """ Lock the custom voice channel """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -84,7 +84,7 @@ class Custom_VC(commands.Cog):
 
   @commands.slash_command(description="Unlocks custom voice channel")
   async def unlock(self, inter : disnake.ApplicationCommandInteraction):
-    """ Unlocks the custom voice channel of the caller """
+    """ Unlock the custom voice channel """
     if inter.author.voice is not None:
       for custom in self.custom_channels:
         if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
@@ -93,10 +93,10 @@ class Custom_VC(commands.Cog):
           await inter.response.send_message(content = f"Unlocked voice channel \"{inter.author.voice.channel.name}\"", ephemeral = True)
     if not inter.response.is_done:
       await inter.response.send_message(content = "Failed to unlock voice channel.", ephemeral = True)
-      
+
   @commands.Cog.listener("on_voice_state_update")
   async def on_voice_state_update(self, member, before, after):
-    """ Checks setup if the cog was reloaded in addition to providing the functionality of the custom voice channels """
+    """ Listen for movement between custom voice channels """
     if not self.setup: # check if setup has been executed (used for when cog is reloaded)
       for guild in self.client.guilds:
         category : disnake.CategoryChannel = None
@@ -135,7 +135,7 @@ class Custom_VC(commands.Cog):
 
   @commands.Cog.listener("on_ready")
   async def on_ready(self):
-    """ Executes setup of the custom voice channels """
+    """ Execute setup for custom voice channels """
     for guild in self.client.guilds:
       category : disnake.CategoryChannel = None
       channel : disnake.VoiceChannel = None
