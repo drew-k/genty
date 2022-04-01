@@ -27,22 +27,10 @@ Install modules in requirements.txt
 pip install -r requirements.txt
 ```
 
-Or, if you want to install required packages alone
-
-```text
-pip install disnake
-```
-```text
-pip install python-dotenv
-```
-```text
-pip install youtube_dl
-```
-
 Place your token in an environment variable (.env) with the following syntax:
 
 ```text
-TOKEN=[your token here]
+TOKEN=[your_token_here]
 ```
 
 Start the bot
