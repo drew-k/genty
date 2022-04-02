@@ -2,7 +2,6 @@ import disnake
 from disnake.ext import commands
 import os
 from dotenv import load_dotenv
-
 load_dotenv() # load the environment variable
 
 
@@ -21,8 +20,7 @@ class Bot(commands.Bot):
   def __init__(self):
     super().__init__(
       intents=disnake.Intents().all(),
-      sync_commands_debug=True,
-      sync_permissions=True,
+      sync_commands=True,
     )
 
   def init_cogs(self, folder: str) -> None:
@@ -45,6 +43,7 @@ def main():
   bot = Bot()
   bot.init_cogs("extensions")
   bot.run(os.getenv("TOKEN"))
+
 
 if __name__ == "__main__":
   main()
