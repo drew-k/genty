@@ -21,6 +21,7 @@ class Bot(commands.Bot):
     super().__init__(
       intents=disnake.Intents().all(),
       sync_commands=True,
+      sync_commands_on_cog_unload=True,
     )
 
   def init_cogs(self, folder: str) -> None:
