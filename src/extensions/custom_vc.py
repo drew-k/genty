@@ -1,7 +1,24 @@
 import disnake
 from disnake.ext import commands
 from random import randint
+import json
 
+
+def load_json(fp: str) -> dict:
+    try:
+        with open (f"{fp}.json", "r") as f:
+            content = json.load(f)
+        return content
+    except FileNotFoundError:
+        f = open(f"{fp}.json", "a+")
+        content = {}
+        json.dump(content, f, indent=4)
+        f.close()
+        return content
+
+def dump_json(fp: str, content: dict) -> None:
+    with open(f"{fp}.json", "w") as f:
+        json.dump(content, f, indent=4)
 
 class Custom_channel():
   def __init__(self, channel: disnake.VoiceChannel, owner: disnake.Member):
@@ -98,18 +115,17 @@ class Custom_VC(commands.Cog):
   async def on_voice_state_update(self, member, before, after):
     """ Listen for movement between custom voice channels """
     if not self.setup: # check if setup has been executed (used for when cog is reloaded)
+      self.guild_channels = load_json("extensions/guilds")
       for guild in self.client.guilds:
-        category : disnake.CategoryChannel = None
-        channel : disnake.VoiceChannel = None
-        for channels in guild.channels: # check individual guilds for setup
-          if channels.name == "Custom Voice Channels":
-            category = channels
-          if channels.name == "Click to Create":
-            channel = channels
-        if category is None or channel is None: # execute setup
-          category = await guild.create_category_channel(name = "Custom Voice Channels")
-          channel = await category.create_voice_channel(name = "Click to Create")
-        self.guild_channels[guild.id] = [category, channel]
+        if guild.id in self.client.guilds:
+          if self.guild_channels[guild.id][0] is None or self.guild_channels[guild.id][1] is None:
+            self.guild_channels[guild.id][0] = await guild.create_category_channel(name = "Custom Voice Channels")
+            self.guild_channels[guild.id][1] = channel = await category.create_voice_channel(name = "Click to Create")
+          dump_json("guilds", self.guild_channels)
+        else:
+          self.guild_channels[guild.id] = [None, None]
+          self.guild_channels[guild.id][0] = await guild.create_category_channel(name = "Custom Voice Channels")
+          self.guild_channels[guild.id][1] = await self.guild_channels[guild.id][0].create_voice_channel(name = "Click to Create")
       self.setup = True
     if before.channel:
       if len(self.custom_channels) > 0:  #checks if custom channels exist
@@ -125,7 +141,7 @@ class Custom_VC(commands.Cog):
                 overwrites[custom.owner] = disnake.PermissionOverwrite(manage_channels=True, create_instant_invite=True, move_members=True)
                 overwrites[member] = disnake.PermissionOverwrite(manage_channels=None, create_instant_invite=None, move_members=None)
                 await before.channel.edit(overwrites=overwrites)
-    if self.guild_channels[member.guild.id][0] is not None and self.guild_channels[member.guild.id][1] is not None:  #check if setup was executed and successful
+    if self.guild_channels[member.guild.id][0] is not None and self.guild_channels[member.guild.id][1] is not None:  #check if setup was successful
       if not before.channel and after.channel:
         if after.channel.id == self.guild_channels[member.guild.id][1].id:
           overwrites = {member : disnake.PermissionOverwrite(manage_channels=True, create_instant_invite=True, move_members=True)}
@@ -136,19 +152,33 @@ class Custom_VC(commands.Cog):
   @commands.Cog.listener("on_ready")
   async def on_ready(self):
     """ Execute setup for custom voice channels """
+    self.guild_channels = load_json("extensions/guilds")
     for guild in self.client.guilds:
-      category : disnake.CategoryChannel = None
-      channel : disnake.VoiceChannel = None
-      for channels in guild.channels: # check if setup has already been executed
-        if channels.name == "Custom Voice Channels":
-          category = channels
-        if channels.name == "Click to Create":
-          channel = channels
-      if category is None or channel is None: # execute setup
-        category = await guild.create_category_channel(name = "Custom Voice Channels")
-        channel = await category.create_voice_channel(name = "Click to Create")
-      self.guild_channels[guild.id] = [category, channel]
+      if guild.id in self.client.guilds:
+        if self.guild_channels[guild.id][0] is None or self.guild_channels[guild.id][1] is None:
+          self.guild_channels[guild.id][0] = await guild.create_category_channel(name = "Custom Voice Channels")
+          self.guild_channels[guild.id][1] = channel = await category.create_voice_channel(name = "Click to Create")
+      else:
+        self.guild_channels[guild.id] = [None, None]
+        self.guild_channels[guild.id][0] = await guild.create_category_channel(name = "1Custom Voice Channels")
+        self.guild_channels[guild.id][1] = await self.guild_channels[guild.id][0].create_voice_channel(name = "Click to Create")
+    dump_json("guilds", self.guild_channels)
     self.setup = True
+# have json store channel IDs instead of channel object
+
+    # for guild in self.client.guilds:
+    #   category : disnake.CategoryChannel = None
+    #   channel : disnake.VoiceChannel = None
+    #   for channels in guild.channels: # check if setup has already been executed
+    #     if channels.name == "Custom Voice Channels":
+    #       category = channels
+    #     if channels.name == "Click to Create":
+    #       channel = channels
+    #   if category is None or channel is None: # execute setup
+    #     category = await guild.create_category_channel(name = "Custom Voice Channels")
+    #     channel = await category.create_voice_channel(name = "Click to Create")
+    #   self.guild_channels[guild.id] = [category, channel]
+    # self.setup = True
 
 
 def setup(client):
