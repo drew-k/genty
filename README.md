@@ -85,6 +85,12 @@ Commands in `src/extensions/custom_vc.py`:
 Click [here](https://discord.com/api/oauth2/authorize?client_id=873165810171002881&permissions=8&scope=applications.commands%20bot) 
 to invite this bot to your server. 
 
-## Author
+## Authors
 
 This bot was made by [drew-k](https://github.com/drew-k).
+
+[Contributors](https://github.com/drew-k/genty/graphs/contributors)
+
+## License
+
+Genty is licensed under the MIT license.
