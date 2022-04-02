@@ -31,11 +31,11 @@ class Bot(commands.Bot):
               self.load_extension(f"{folder}.{file[:-3]}")
 
   async def on_ready(self):
-    print(Format.green + f"> Bot is ready as {self.user}." + Format.reset)
+    print(Format.green + f"> {self.user} is ready." + Format.reset)
 
   async def on_connect(self):
     print(Format.yellow + f"> {self.user} came online." + Format.reset)
-    
+
   async def on_disconnect(self):
     print(Format.red + f"> {self.user} went offline." + Format.reset)
 
