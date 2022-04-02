@@ -8,7 +8,7 @@ class SlashCommands(commands.Cog):
 
     @commands.slash_command()
     @commands.is_owner()
-    async def guild_count(self, inter : disnake.ApplicationCommandInteraction):
+    async def guildcount(self, inter : disnake.ApplicationCommandInteraction):
         """ Get the guild count of the bot """
         await inter.response.send_message(content=f"{self.bot.user} is in {len(self.bot.guilds)} guilds.", ephemeral=True)
 
@@ -52,6 +52,7 @@ class SlashCommands(commands.Cog):
         """ Delete 'n' messages """
         await inter.channel.purge(limit=n)
         await inter.response.send_message(content=f"{n} messages deleted.", ephemeral=True)
+
 
 def setup(client):
   client.add_cog(SlashCommands(client))
