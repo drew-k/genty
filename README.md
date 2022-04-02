@@ -27,7 +27,7 @@ Install modules in requirements.txt
 pip install -r requirements.txt
 ```
 
-Place your token in an environment variable (.env) with the following syntax:
+Place your token in an environment variable (.env) in the root directory with the following syntax:
 
 ```text
 TOKEN=[your_token_here]
