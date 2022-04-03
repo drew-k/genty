@@ -16,7 +16,6 @@ def load_json(fp: str) -> dict:
         f.close()
         return content
 
-
 def dump_json(fp: str, content: dict) -> None:
     with open(f"{fp}.json", "w") as f:
         json.dump(content, f, indent=4)
@@ -31,20 +30,18 @@ class Custom_channel():
 class Custom_VC(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.category: disnake.CategoryChannel = None
-        self.channel: disnake.VoiceChannel = None
-        self.jsonpath: str = "extensions/guild"
+        self.jsonpath: str = "extensions/guilds"
         self.channelpath: str = "extensions/channels"
 
     @commands.slash_command(description="Whitelist a user to join your voice channel")
     async def whitelist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
         """ Whitelist a user """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     overwrites = inter.author.voice.channel.overwrites
-                    overwrites[user] = disnake.PermissionOverwrite(
-                        connect=True)
+                    overwrites[user] = disnake.PermissionOverwrite(connect=True)
                     await inter.author.voice.channel.edit(overwrites=overwrites)
                     await inter.response.send_message(content=f"{user.display_name} is now whitelisted.", ephemeral=True)
         if not inter.response.is_done():
@@ -54,11 +51,11 @@ class Custom_VC(commands.Cog):
     async def blacklist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
         """ Blacklist a user """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     overwrites = inter.author.voice.channel.overwrites
-                    overwrites[user] = disnake.PermissionOverwrite(
-                        connect=False)
+                    overwrites[user] = disnake.PermissionOverwrite(connect=False)
                     await inter.author.voice.channel.edit(overwrites=overwrites)
                     await inter.response.send_message(content=f"{user.display_name} is now blacklisted.", ephemeral=True)
         if not inter.response.is_done():
@@ -68,8 +65,9 @@ class Custom_VC(commands.Cog):
     async def limit(self, inter: disnake.ApplicationCommandInteraction, users: int = 0):
         """ Set a user limit on the custom voice channel """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     await inter.author.voice.channel.edit(user_limit=users)
                     await inter.response.send_message(content="Voice channel user limit successfully applied.", ephemeral=True)
         if not inter.response.is_done():
@@ -79,10 +77,11 @@ class Custom_VC(commands.Cog):
     async def rename(self, inter: disnake.ApplicationCommandInteraction, name: str = None):
         """ Rename custom voice channel """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     if name is None:  # reset name to default
-                        await inter.author.voice.channel.edit(name=f"{custom.owner.display_name}\'s Voice Channel")
+                        await inter.author.voice.channel.edit(name=f"{inter.author.display_name}\'s Voice Channel")
                     else:  # set name to provided arg
                         await inter.author.voice.channel.edit(name=name)
                     await inter.response.send_message(content="Channel successfully renamed.", ephemeral=True)
@@ -93,8 +92,9 @@ class Custom_VC(commands.Cog):
     async def lock(self, inter: disnake.ApplicationCommandInteraction):
         """ Lock the custom voice channel """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     await inter.author.voice.channel.set_permissions(
                         inter.guild.default_role, connect=False)
                     await inter.response.send_message(
@@ -108,8 +108,9 @@ class Custom_VC(commands.Cog):
     async def unlock(self, inter: disnake.ApplicationCommandInteraction):
         """ Unlock the custom voice channel """
         if inter.author.voice is not None:
-            for custom in self.custom_channels:
-                if custom.channel.id == inter.author.voice.channel.id and custom.owner.id == inter.author.id:
+            custom_channels = load_json(self.channelpath)
+            if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
+                if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     await inter.author.voice.channel.set_permissions(
                         inter.guild.default_role, connect=True)
                     await inter.response.send_message(content=f"Unlocked voice channel \"{inter.author.voice.channel.name}\"", ephemeral=True)
@@ -126,7 +127,7 @@ class Custom_VC(commands.Cog):
             category: disnake.CategoryChannel = None
             channel: disnake.VoiceChannel = None
             if str(member.guild.id) not in guilds_json:
-                category = await guild.create_category_channel(name="[dev]Custom Voice Channels")
+                category = await guild.create_category_channel(name="Custom Voice Channels")
                 channel = await category.create_voice_channel(name="Click to Create")
                 guilds_json[guild.id] = [category.id, channel.id]
                 dump_json(self.jsonpath, guilds_json)

@@ -1,4 +1,8 @@
-*.env
-*.json
+# Environments
+*env
 venv/
+
+src/extensions/channels.json
+src/extensions/guild.json
 gentylogo.png
+__pycache__/
