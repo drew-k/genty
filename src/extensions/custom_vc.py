@@ -34,7 +34,7 @@ class Custom_VC(commands.Cog):
         self.channelpath: str = "extensions/channels"
 
     @commands.slash_command(description="Whitelist a user to join your voice channel")
-    async def whitelist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
+    async def vc_whitelist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
         """ Whitelist a user """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
@@ -48,7 +48,7 @@ class Custom_VC(commands.Cog):
             await inter.response.send_message(content=f"Failed to whitelist {user.display_name}.", ephemeral=True)
 
     @commands.slash_command(description="Blacklist a user from joining your voice channel")
-    async def blacklist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
+    async def vc_blacklist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
         """ Blacklist a user """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
@@ -62,7 +62,7 @@ class Custom_VC(commands.Cog):
             await inter.response.send_message(content=f"Failed to blacklist {user.display_name}.", ephemeral=True)
 
     @commands.slash_command(description="Limit the number of users in a custom voice channel.")
-    async def limit(self, inter: disnake.ApplicationCommandInteraction, users: int = 0):
+    async def vc_limit(self, inter: disnake.ApplicationCommandInteraction, users: int = 0):
         """ Set a user limit on the custom voice channel """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
@@ -74,7 +74,7 @@ class Custom_VC(commands.Cog):
             await inter.response.send_message(content="Failed to set user limit", ephemeral=True)
 
     @commands.slash_command(description="Change the name of a custom voice channel.")
-    async def rename(self, inter: disnake.ApplicationCommandInteraction, name: str = None):
+    async def vc_rename(self, inter: disnake.ApplicationCommandInteraction, name: str = None):
         """ Rename custom voice channel """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
@@ -89,7 +89,7 @@ class Custom_VC(commands.Cog):
             await inter.response.send_message(content="Failed to rename voice channel.", ephemeral=True)
 
     @commands.slash_command(description="Lock custom voice channel")
-    async def lock(self, inter: disnake.ApplicationCommandInteraction):
+    async def vc_lock(self, inter: disnake.ApplicationCommandInteraction):
         """ Lock the custom voice channel """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
@@ -105,7 +105,7 @@ class Custom_VC(commands.Cog):
                 content="Failed to lock voice channel.", ephemeral=True)
 
     @commands.slash_command(description="Unlocks custom voice channel")
-    async def unlock(self, inter: disnake.ApplicationCommandInteraction):
+    async def vc_unlock(self, inter: disnake.ApplicationCommandInteraction):
         """ Unlock the custom voice channel """
         if inter.author.voice is not None:
             custom_channels = load_json(self.channelpath)
