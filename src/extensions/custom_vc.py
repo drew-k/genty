@@ -168,8 +168,7 @@ class Custom_VC(commands.Cog):
                         await before.channel.edit(overwrites=overwrites)
             dump_json(self.channelpath, custom_channels)
 
-
-    @ commands.Cog.listener("on_ready")
+    @commands.Cog.listener("on_ready")
     async def on_ready(self):
         """ Execute setup for custom voice channels """
         guilds_json=load_json(self.jsonpath)
@@ -181,6 +180,16 @@ class Custom_VC(commands.Cog):
                 channel=await category.create_voice_channel(name="Click to Create")
                 guilds_json[guild.id]=[category.id, channel.id]
                 dump_json(self.jsonpath, guilds_json)
+
+    @commands.Cog.listener("on_guild_join")
+    async def on_guild_join(self, guild):
+        """ Setup voice channels """
+        guilds_json = load_json(self.jsonpath)
+        if str(guild.id) not in guilds_json:
+            category=await guild.create_category_channel(name="Custom Voice Channels")
+            channel=await category.create_voice_channel(name="Click to Create")
+            guilds_json[guild.id]=[category.id, channel.id]
+            dump_json(self.jsonpath, guilds_json)
 
 
 def setup(client):
