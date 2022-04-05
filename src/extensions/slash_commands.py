@@ -28,7 +28,7 @@ class SlashCommands(commands.Cog):
         try:
             self.bot.unload_extension(path)
             await inter.response.send_message(content=f"{path} was unloaded.", ephemeral=True)
-        except (commands.NoEntryPointError, commands.ExtensionNotFound): # I think (?) this won't happen because bot.unload_extension only throws disnake.ext.commands.ExtensionNotLoaded
+        except commands.ExtensionNotFound:
             await inter.response.send_message(contant=f"Could not find an extension with name {path}.", ephemeral=True)
         except commands.ExtensionNotLoaded:
             await inter.response.send_message(content=f"{path} was not loaded.", ephemeral=True)
