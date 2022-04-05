@@ -81,7 +81,7 @@ class Custom_VC(commands.Cog):
             if str(inter.author.voice.channel.id) in custom_channels[str(inter.guild.id)]:
                 if inter.author.id == custom_channels[str(inter.guild.id)][str(inter.author.voice.channel.id)]:
                     if name is None:  # reset name to default
-                        await inter.author.voice.channel.edit(name=f"{inter.author.display_name}\'s Voice Channel")
+                        await inter.author.voice.channel.edit(name=f"{inter.author.display_name}\'s Channel")
                     else:  # set name to provided arg
                         await inter.author.voice.channel.edit(name=name)
                     await inter.response.send_message(content="Channel successfully renamed.", ephemeral=True)
