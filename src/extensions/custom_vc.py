@@ -27,8 +27,8 @@ class CustomVC(commands.Cog):
     """ Lets users create their own customizable voice channels """
     def __init__(self, client):
         self.client = client
-        self.jsonpath: str = "src/data/guilds"
-        self.channelpath: str = "src/data/channels"
+        self.jsonpath: str = "data/guilds"
+        self.channelpath: str = "data/channels"
 
     @commands.slash_command(description="Whitelist a user to join your voice channel")
     async def vc_whitelist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
