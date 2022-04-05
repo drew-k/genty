@@ -164,6 +164,35 @@ class CustomVC(commands.Cog):
                         await before.channel.edit(overwrites=overwrites)
             dump_json(self.channelpath, custom_channels)
 
+    @commands.Cog.listener("on_connect")
+    async def on_connect(self):
+        """ Check for any channel changes while offline """
+        guilds_json=load_json(self.jsonpath)
+        for guild in self.client.guilds:
+            category: disnake.CategoryChannel=None
+            channel: disnake.VoiceChannel=None
+            if str(guild.id) not in guilds_json:
+                guilds_json[str(guild.id)] = {}
+                category=await guild.create_category_channel(name="Custom Voice Channels")
+                channel=await category.create_voice_channel(name="Click to Create")
+                guilds_json[str(guild.id)]["cat"]= category.id
+                guilds_json[str(guild.id)]["chan"] = channel.id
+                dump_json(self.jsonpath, guilds_json)
+            elif str(guild.id) in guilds_json:
+                str_guild_id = str(guild.id)
+                try:
+                    category = await guild.fetch_channel(guilds_json[str_guild_id]["cat"])
+                except:
+                    category = await guild.create_category_channel(name="Custom Voice Channels")
+                try:
+                    channel = await guild.fetch_channel(guilds_json[str_guild_id]["chan"])
+                except:
+                    channel = await category.create_voice_channel(name="Click to Create")
+                await channel.move(category=category, beginning=True)
+                guilds_json[str(guild.id)]["cat"]= category.id
+                guilds_json[str(guild.id)]["chan"] = channel.id
+                dump_json(self.jsonpath, guilds_json)
+
     @commands.Cog.listener("on_ready")
     async def on_ready(self):
         """ Execute setup for custom voice channels """
