@@ -121,9 +121,11 @@ class CustomVC(commands.Cog):
         # Check setup
         guilds_json = load_json(self.jsonpath)
         if str(member.guild.id) not in guilds_json:
-            category = await member.guild.create_category_channel(name="Custom Voice Channels")
-            channel = await category.create_voice_channel(name="Click to Create")
-            guilds_json[member.guild.id] = [category.id, channel.id]
+            guilds_json[str(member.guild.id)] = {}
+            category=await member.guild.create_category_channel(name="Custom Voice Channels")
+            channel=await category.create_voice_channel(name="Click to Create")
+            guilds_json[str(member.guild.id)]["cat"]= category.id
+            guilds_json[str(member.guild.id)]["chan"] = channel.id
             dump_json(self.jsonpath, guilds_json)
 
         channels = load_json(self.channelpath)
@@ -134,8 +136,8 @@ class CustomVC(commands.Cog):
         # Channel creation
         if not before.channel and after.channel:  # only create a voice channel if the user was not in one before
             # check if the joined channel was the guild's create channel
-            if after.channel.id == guilds_json[str(member.guild.id)][1]:
-                create_category = await self.client.fetch_channel(guilds_json[str(member.guild.id)][0])
+            if after.channel.id == guilds_json[str(member.guild.id)]["chan"]:
+                create_category = await self.client.fetch_channel(guilds_json[str(member.guild.id)]["cat"])
                 custom_channel = await create_category.create_voice_channel(name=f"{member.display_name}\'s Channel")
                 await member.move_to(custom_channel)  # move the member
                 custom_channels = load_json(self.channelpath)
@@ -167,12 +169,12 @@ class CustomVC(commands.Cog):
         """ Execute setup for custom voice channels """
         guilds_json=load_json(self.jsonpath)
         for guild in self.client.guilds:
-            category: disnake.CategoryChannel=None
-            channel: disnake.VoiceChannel=None
             if str(guild.id) not in guilds_json:
+                guilds_json[str(guild.id)] = {}
                 category=await guild.create_category_channel(name="Custom Voice Channels")
                 channel=await category.create_voice_channel(name="Click to Create")
-                guilds_json[guild.id]=[category.id, channel.id]
+                guilds_json[str(guild.id)]["cat"]= category.id
+                guilds_json[str(guild.id)]["chan"] = channel.id
                 dump_json(self.jsonpath, guilds_json)
 
     @commands.Cog.listener("on_guild_join")
@@ -180,9 +182,11 @@ class CustomVC(commands.Cog):
         """ Setup voice channels """
         guilds_json = load_json(self.jsonpath)
         if str(guild.id) not in guilds_json:
+            guilds_json[str(guild.id)] = {}
             category=await guild.create_category_channel(name="Custom Voice Channels")
             channel=await category.create_voice_channel(name="Click to Create")
-            guilds_json[guild.id]=[category.id, channel.id]
+            guilds_json[str(guild.id)]["cat"]= category.id
+            guilds_json[str(guild.id)]["chan"] = channel.id
             dump_json(self.jsonpath, guilds_json)
 
 
