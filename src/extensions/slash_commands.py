@@ -8,12 +8,6 @@ class SlashCommands(commands.Cog):
     def __init__(self, bot):
         self.bot:commands.Bot = bot
 
-    @commands.slash_command()
-    @commands.is_owner()
-    async def guildcount(self, inter : disnake.ApplicationCommandInteraction):
-        """ Get the guild count of the bot """
-        await inter.response.send_message(content=f"{self.bot.user} is in {len(self.bot.guilds)} guilds.", ephemeral=True)
-
     @commands.slash_command(description="Load an extension")
     @commands.is_owner()
     async def load(self, inter: disnake.ApplicationCommandInteraction, path: str):
