@@ -67,7 +67,6 @@ List of commands:
 |---------------------------|------------------|--------------------------------------|
 | /load \<filepath\>        | Bot owner        | Loads a new extension                |
 | /unload \<filepath\>      | Bot owner        | Unloads an extension                 |
-| /reload \<filepath\>      | Bot owner        | Reloads an extension                 |
 | /wipe \<n\>               | `ADMINISTRATOR`  | Deletes 'n' messages                 |
 | /uptime                   | Bot owner        | Gets the current uptime of the bot   |
 
