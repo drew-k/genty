@@ -38,7 +38,7 @@ class Bot(commands.Bot):
         """ Initialize cogs in provided folder """
         for file in os.listdir(folder):
             if file.endswith(".py"):
-                self.load_extension(f"extensions.{file[:-3]}")
+                self.load_extension(f"{folder}.{file[:-3]}")
 
     async def on_ready(self):
         print(Format.green + f"> {self.user} is ready." + Format.reset)
@@ -66,7 +66,6 @@ def main():
     bot = Bot()
     bot.init_cogs("extensions")
     bot.run(os.getenv("TOKEN"))
-
 
 if __name__ == "__main__":
     main()
