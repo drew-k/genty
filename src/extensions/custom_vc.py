@@ -24,8 +24,8 @@ def dump_json(fp: str, content: dict) -> None:
 class Custom_VC(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.jsonpath: str = "extensions/guilds"
-        self.channelpath: str = "extensions/channels"
+        self.jsonpath: str = "data/guilds"
+        self.channelpath: str = "data/channels"
 
     @commands.slash_command(description="Whitelist a user to join your voice channel")
     async def vc_whitelist(self, inter: disnake.ApplicationCommandInteraction, user: disnake.Member):
