@@ -70,14 +70,14 @@ List of commands:
 
 Commands in `src/extensions/custom_vc.py`:
 
-| Command                             | Permission       | Description                                                               |
-|-------------------------------------|------------------|---------------------------------------------------------------------------|
-| /whitelist \<Optional: member\>     | Channel owner    | Whitelists a user to a custom channel                                     |
-| /blacklist \<Optional: member\>     | Channel owner    | Blacklists a user from a custom channel                                   |
-| /limit \<Optional: n\>              | Channel owner    | Sets a user limit of `n` on the custom channel                            | 
-| /rename \<Optional: name\>          | Channel owner    | Renames a custom channel to `name`                                        |
-| /lock                               | Channel owner    | Locks a custom channel (whitelisted users can still join)                 |
-| /unlock                             | Channel owner    | Unlocks a custom channel (default setting, blacklisted users cannot join) |
+| Command                                | Permission       | Description                                                               |
+|----------------------------------------|------------------|---------------------------------------------------------------------------|
+| /vc_whitelist \<Optional: member\>     | Channel owner    | Whitelists a user to a custom channel                                     |
+| /vc_blacklist \<Optional: member\>     | Channel owner    | Blacklists a user from a custom channel                                   |
+| /vc_limit \<Optional: n\>              | Channel owner    | Sets a user limit of `n` on the custom channel                            | 
+| /vc_rename \<Optional: name\>          | Channel owner    | Renames a custom channel to `name`                                        |
+| /vc_lock                               | Channel owner    | Locks a custom channel (whitelisted users can still join)                 |
+| /vc_unlock                             | Channel owner    | Unlocks a custom channel (default setting, blacklisted users cannot join) |
 
 
 ## Invite bot to your server
