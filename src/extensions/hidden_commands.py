@@ -10,33 +10,35 @@ class HiddenCommands(commands.Cog):
 
     @commands.command(description="Load an extension", hidden=True)
     @commands.is_owner()
-    async def load(self, inter: disnake.ApplicationCommandInteraction, path: str):
+    async def load(self, ctx, path: str):
         """ Load an extension """
+        await ctx.message.delete()
         try:
             self.bot.load_extension(path)
-            await inter.response.send_message(content=f"{path} was loaded.", ephemeral=True)
+            await ctx.send(content=f"{path} was loaded.", delete_after=10)
         except (commands.NoEntryPointError, commands.ExtensionNotFound):
-            await inter.response.send_message(content=f"Could not find an extension with name {path}.", ephemeral=True)
+            await ctx.send(content=f"Could not find an extension with name {path}.", delete_after=10)
         except commands.ExtensionAlreadyLoaded:
             try:
                 self.bot.reload_extension(path)
-                await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
+                await ctx.send(content=f"{path} was reloaded.", delete_after=10)
             except commands.ExtensionFailed:
-                await inter.response.send_message(content="Something went wrong.", ephemeral=True)
+                await ctx.send(content="Something went wrong.", delete_after=10)
         except commands.ExtensionFailed:
-            await inter.response.send_message(content="Something went wrong.", ephemeral=True)
+            await ctx.send(content="Something went wrong.", delete_after=10)
 
     @commands.command(description="Unload an extension", hidden=True)
     @commands.is_owner()
-    async def unload(self, inter: disnake.ApplicationCommandInteraction, path: str):
+    async def unload(self, ctx, path: str):
         """ Unload an extension """
+        await ctx.message.delete()
         try:
             self.bot.unload_extension(path)
-            await inter.response.send_message(content=f"{path} was unloaded.", ephemeral=True)
+            await ctx.send(content=f"{path} was unloaded.", delete_after=10)
         except commands.ExtensionNotFound:
-            await inter.response.send_message(contant=f"Could not find an extension with name {path}.", ephemeral=True)
+            await ctx.send(contant=f"Could not find an extension with name {path}.", delete_after=10)
         except commands.ExtensionNotLoaded:
-            await inter.response.send_message(content=f"{path} was not loaded.", ephemeral=True)
+            await ctx.send(content=f"{path} was not loaded.", delete_after=10)
 
 def setup(client):
     client.add_cog(HiddenCommands(client))
