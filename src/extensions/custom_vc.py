@@ -21,12 +21,6 @@ def dump_json(fp: str, content: dict) -> None:
         json.dump(content, f, indent=4)
 
 
-class Custom_channel():
-    def __init__(self, channel: disnake.VoiceChannel, owner: disnake.Member):
-        self.channel: disnake.VoiceChannel = channel
-        self.owner: disnake.Member = owner
-
-
 class Custom_VC(commands.Cog):
     def __init__(self, client):
         self.client = client
