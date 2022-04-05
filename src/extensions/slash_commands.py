@@ -18,8 +18,13 @@ class SlashCommands(commands.Cog):
         except (commands.NoEntryPointError, commands.ExtensionNotFound):
             await inter.response.send_message(content=f"Could not find an extension with name {path}.", ephemeral=True)
         except commands.ExtensionAlreadyLoaded:
-            self.bot.reload_extension(path)
-            await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
+            try:
+                self.bot.reload_extension(path)
+                await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
+            except commands.ExtensionFailed:
+                await inter.response.send_message(content="Something went wrong.", ephemeral=True)
+        except commands.ExtensionFailed:
+            await inter.response.send_message(content="Something went wrong.", ephemeral=True)
 
     @commands.slash_command(description="Unload an extension")
     @commands.is_owner()
