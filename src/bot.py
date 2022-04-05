@@ -31,6 +31,7 @@ class Bot(commands.Bot):
             intents=disnake.Intents().all(),
             sync_commands=True,
             sync_commands_on_cog_unload=True,
+            command_prefix='.'
             )
 
     def init_cogs(self, folder: str) -> None:
@@ -65,7 +66,6 @@ def main():
     bot = Bot()
     bot.init_cogs("extensions")
     bot.run(os.getenv("TOKEN"))
-
 
 if __name__ == "__main__":
     main()
