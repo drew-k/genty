@@ -64,7 +64,7 @@ class Bot(commands.Bot):
 
 def main():
     bot = Bot()
-    bot.init_cogs("src\extensions")
+    bot.init_cogs("extensions")
     bot.run(os.getenv("TOKEN"))
 
 
