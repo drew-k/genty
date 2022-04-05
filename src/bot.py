@@ -31,13 +31,14 @@ class Bot(commands.Bot):
             intents=disnake.Intents().all(),
             sync_commands=True,
             sync_commands_on_cog_unload=True,
+            command_prefix='.'
             )
 
     def init_cogs(self, folder: str) -> None:
         """ Initialize cogs in provided folder """
         for file in os.listdir(folder):
             if file.endswith(".py"):
-                self.load_extension(f"{folder}.{file[:-3]}")
+                self.load_extension(f"extensions.{file[:-3]}")
 
     async def on_ready(self):
         print(Format.green + f"> {self.user} is ready." + Format.reset)
@@ -63,7 +64,7 @@ class Bot(commands.Bot):
 
 def main():
     bot = Bot()
-    bot.init_cogs("extensions")
+    bot.init_cogs("src\extensions")
     bot.run(os.getenv("TOKEN"))
 
 
