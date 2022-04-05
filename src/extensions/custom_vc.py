@@ -182,11 +182,11 @@ class CustomVC(commands.Cog):
                 str_guild_id = str(guild.id)
                 try:
                     category = await guild.fetch_channel(guilds_json[str_guild_id]["cat"])
-                except Exception:
+                except (disnake.HTTPException, disnake.NotFound, disnake.Forbidden):
                     category = await guild.create_category_channel(name="Custom Voice Channels")
                 try:
                     channel = await guild.fetch_channel(guilds_json[str_guild_id]["chan"])
-                except Exception:
+                except (disnake.HTTPException, disnake.NotFound, disnake.Forbidden):
                     channel = await category.create_voice_channel(name="Click to Create")
                 await channel.move(category=category, beginning=True)
                 guilds_json[str(guild.id)]["cat"]= category.id
