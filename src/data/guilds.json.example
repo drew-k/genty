@@ -1,0 +1,6 @@
+{
+	"guild_id_here": {
+		"cat" : cat_id_here,
+		"chan" : chan_id_here
+	}
+}
