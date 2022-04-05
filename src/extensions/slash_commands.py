@@ -1,7 +1,3 @@
-from cgitb import text
-from os import times
-from turtle import title
-from xmlrpc.client import Boolean
 import disnake
 from disnake.ext import commands
 from disnake.ui import Button
