@@ -70,6 +70,8 @@ List of commands:
 | /wipe \<n\>               | `ADMINISTRATOR`  | Deletes 'n' messages                 |
 | /uptime                   | Bot owner        | Gets the current uptime of the bot   |
 
+`/load` and `/unload` both expect a file path in format `dir.module` such as `extensions.slash_commands`
+
 Commands in `src/extensions/custom_vc.py`:
 
 | Command                                | Permission       | Description                                                               |
