@@ -4,24 +4,27 @@ import disnake
 from disnake.ext import commands
 
 
-def load_json(fp: str) -> dict:
+def load_json(file_path: str) -> dict:
+    """ Load a json at the given path """
     try:
-        with open(f"{fp}.json", "r") as f:
+        with open(f"{file_path}.json", "r") as f:
             content = json.load(f)
         return content
     except FileNotFoundError:
-        f = open(f"{fp}.json", "a+")
+        f = open(f"{file_path}.json", "a+")
         content = {}
         json.dump(content, f, indent=4)
         f.close()
         return content
 
-def dump_json(fp: str, content: dict) -> None:
-    with open(f"{fp}.json", "w") as f:
+def dump_json(file_path: str, content: dict) -> None:
+    """ Dump the contents into a json at the given path """
+    with open(f"{file_path}.json", "w") as f:
         json.dump(content, f, indent=4)
 
 
-class Custom_VC(commands.Cog):
+class CustomVC(commands.Cog):
+    """ Lets users create their own customizable voice channels """
     def __init__(self, client):
         self.client = client
         self.jsonpath: str = "data/guilds"
@@ -184,5 +187,5 @@ class Custom_VC(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(Custom_VC(client))
+    client.add_cog(CustomVC(client))
     print(f"> Loaded {__name__}")

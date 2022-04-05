@@ -3,6 +3,8 @@ from disnake.ext import commands
 
 
 class SlashCommands(commands.Cog):
+    """ Set up basic slash commands """
+
     def __init__(self, bot):
         self.bot:commands.Bot = bot
 
@@ -17,10 +19,10 @@ class SlashCommands(commands.Cog):
     async def load(self, inter: disnake.ApplicationCommandInteraction, path: str):
         """ Load an extension """
         try:
-          self.bot.load_extension(path)
-          await inter.response.send_message(content=f"{path} was loaded.", ephemeral=True)
+            self.bot.load_extension(path)
+            await inter.response.send_message(content=f"{path} was loaded.", ephemeral=True)
         except:
-          await inter.response.send_message(content=f"Extension \"{path}\" already loaded or was not able to be found.", ephemeral=True)
+            await inter.response.send_message(content=f"Extension \"{path}\" already loaded or was not able to be found.", ephemeral=True)
 
     @commands.slash_command(description="Unload an extension")
     @commands.is_owner()
@@ -37,14 +39,14 @@ class SlashCommands(commands.Cog):
     async def reload(self, inter : disnake.ApplicationCommandInteraction, path : str):
         """ Reload an extension """
         try:
-          self.bot.reload_extension(path)
-          await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
+            self.bot.reload_extension(path)
+            await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
         except:
-          try:
-            self.bot.load_extension(path)
-            await inter.response.send_message(content=f"{path} was not loaded, but now is.", ephemeral=True)
-          except:
-            await inter.response.send_message(content=f"{path} was not able to be reloaded.", ephemeral=True)
+            try:
+                self.bot.load_extension(path)
+                await inter.response.send_message(content=f"{path} was not loaded, but now is.", ephemeral=True)
+            except:
+                await inter.response.send_message(content=f"{path} was not able to be reloaded.", ephemeral=True)
 
     @commands.slash_command(description="Clear n messages")
     @commands.has_permissions(administrator=True)
@@ -55,5 +57,5 @@ class SlashCommands(commands.Cog):
 
 
 def setup(client):
-  client.add_cog(SlashCommands(client))
-  print(f"> Loaded {__name__}")
+    client.add_cog(SlashCommands(client))
+    print(f"> Loaded {__name__}")

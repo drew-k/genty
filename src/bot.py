@@ -1,6 +1,6 @@
+import os
 import disnake
 from disnake.ext import commands
-import os
 from dotenv import load_dotenv
 load_dotenv() # load the environment variable
 
@@ -25,6 +25,7 @@ async def update_status(client: disnake.Client) -> None:
     await client.change_presence(activity=activity)
 
 class Bot(commands.Bot):
+    """ Creates a Bot class """
     def __init__(self):
         super().__init__(
             intents=disnake.Intents().all(),
@@ -56,9 +57,9 @@ class Bot(commands.Bot):
         print(Format.blue + f"> {self.user} left {guild.name}." + Format.reset)
         await update_status(self)
 
-    async def on_slash_command_error(self, inter: disnake.AppCmdInter, error: commands.CommandError):
-      print(Format.red + f"> {inter.author} attempted to use /{inter.data.name} but the interaction failed.\n\tError: {error}" + Format.reset)
-      await inter.response.send_message(content=error, ephemeral=True)
+    async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
+        print(Format.red + f"> {interaction.author} attempted to use /{interaction.data.name} but the interaction failed.\n\tError: {exception}" + Format.reset)
+        await interaction.response.send_message(content=exception, ephemeral=True)
 
 def main():
     bot = Bot()
@@ -67,4 +68,4 @@ def main():
 
 
 if __name__ == "__main__":
-  main()
+    main()
