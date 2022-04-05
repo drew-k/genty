@@ -15,8 +15,14 @@ class SlashCommands(commands.Cog):
         try:
             self.bot.load_extension(path)
             await inter.response.send_message(content=f"{path} was loaded.", ephemeral=True)
-        except:
-            await inter.response.send_message(content=f"Extension \"{path}\" already loaded or was not able to be found.", ephemeral=True)
+        except (commands.NoEntryPointError, commands.ExtensionNotFound):
+            await inter.response.send_message(content=f"Could not find an extension with name f{path}.", ephemeral=True)
+        except commands.ExtensionAlreadyLoaded:
+            try:
+                self.bot.reload_extension(path)
+                await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
+            except Exception as e:
+                await inter.response.send_message(content=f"{path} was not able to be reloaded.", ephemeral=True)
 
     @commands.slash_command(description="Unload an extension")
     @commands.is_owner()
@@ -25,22 +31,8 @@ class SlashCommands(commands.Cog):
         try:
             self.bot.unload_extension(path)
             await inter.response.send_message(content=f"{path} was unloaded.", ephemeral=True)
-        except:
+        except Exception as e:
             await inter.response.send_message(content=f"Extension \"{path}\" not loaded or was not able to be found.", ephemeral=True)
-
-    @commands.slash_command(description="Reload an extension")
-    @commands.is_owner()
-    async def reload(self, inter : disnake.ApplicationCommandInteraction, path : str):
-        """ Reload an extension """
-        try:
-            self.bot.reload_extension(path)
-            await inter.response.send_message(content=f"{path} was reloaded.", ephemeral=True)
-        except:
-            try:
-                self.bot.load_extension(path)
-                await inter.response.send_message(content=f"{path} was not loaded, but now is.", ephemeral=True)
-            except:
-                await inter.response.send_message(content=f"{path} was not able to be reloaded.", ephemeral=True)
 
     @commands.slash_command(description="Clear n messages")
     @commands.has_permissions(administrator=True)
