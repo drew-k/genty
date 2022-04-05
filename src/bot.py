@@ -63,7 +63,7 @@ class Bot(commands.Bot):
 def main():
     bot = Bot()
     bot.init_cogs("extensions")
-    bot.run(os.getenv("DEV"))
+    bot.run(os.getenv("TOKEN"))
 
 
 if __name__ == "__main__":
