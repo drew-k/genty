@@ -5,7 +5,6 @@
 [![Version](https://img.shields.io/github/v/release/drew-k/genty?include_prereleases)](https://github.com/drew-k/genty/releases)
 [![Support Server](https://img.shields.io/discord/960915291502686298)](https://discord.gg/a8qwkJvshH)
 
-
 ## Requirements
 
 To self-host, you will need the following:
