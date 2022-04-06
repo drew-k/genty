@@ -4,8 +4,6 @@ from disnake.ui import Button
 from disnake import ButtonStyle
 from random import choice
 from extensions.custom_vc import load_json, dump_json
-from asyncio import TimeoutError
-
 
 class SlashCommands(commands.Cog):
     """ Set up basic slash commands """
@@ -114,7 +112,7 @@ class SlashCommands(commands.Cog):
                     elif outcome == 'tie':
                         rps_json[str(inter.author.id)]["ties"] += 1
                 dump_json(self.jsonpath, rps_json)
-            except TimeoutError:
+            except:
                 await inter.edit_original_message(embed=out,components=[])          
         
 

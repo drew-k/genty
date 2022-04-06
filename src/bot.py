@@ -52,10 +52,26 @@ class Bot(commands.Bot):
 
     async def on_guild_join(self, guild):
         print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
+        join_embed = disnake.Embed(
+            title=f"Joined Server: `{guild.id}`", 
+            description = f"> {self.user.display_name} joined {guild.name} with {guild.member_count} members.", 
+            color = disnake.Color.green()
+        )
+        genty_guild = await self.fetch_guild(956966239736049725)
+        channel = await genty_guild.fetch_channel(961243397060960306)
+        await channel.send(embed=join_embed)
         await update_status(self)
 
     async def on_guild_remove(self, guild):
         print(Format.blue + f"> {self.user} left {guild.name}." + Format.reset)
+        leave_embed = disnake.Embed(
+            title=f"Left Server: `{guild.id}`", 
+            description = f"> {self.user.display_name} left {guild.name} with {guild.member_count} members.", 
+            color = disnake.Color.red()
+        )
+        genty_guild = await self.fetch_guild(956966239736049725)
+        channel = await genty_guild.fetch_channel(961243397060960306)
+        await channel.send(embed=leave_embed)
         await update_status(self)
 
     async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
