@@ -57,8 +57,6 @@ class Bot(commands.Bot):
     async def on_disconnect(self):
         print(Format.red + f"> {self.user} went offline." + Format.reset)
 
-   
-
     async def on_guild_join(self, guild):
         print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
         join_embed = disnake.Embed(
