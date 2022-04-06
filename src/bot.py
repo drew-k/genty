@@ -1,5 +1,3 @@
-from contextlib import redirect_stderr
-from http import client
 import os
 import disnake
 from disnake.ext import commands
@@ -26,9 +24,9 @@ async def update_status(client: disnake.Client) -> None:
         )
     await client.change_presence(activity=activity)
 
-async def dev_logs(self ,id: int) -> disnake.TextChannel:
+async def dev_logs(self ,channel_id: int) -> disnake.TextChannel:
     genty_dev_guild = await self.fetch_guild(956966239736049725)
-    channel = await genty_dev_guild.fetch_channel(id)
+    channel = await genty_dev_guild.fetch_channel(channel_id)
     return channel
 
 class Bot(commands.Bot):
