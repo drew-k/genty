@@ -4,12 +4,14 @@ from disnake.ui import Button
 from disnake import ButtonStyle
 from random import choice
 from extensions.custom_vc import load_json, dump_json
+from asyncio import TimeoutError
+
 
 class SlashCommands(commands.Cog):
     """ Set up basic slash commands """
 
     def __init__(self, bot):
-        self.bot:commands.Bot = bot,
+        self.bot:commands.Bot = bot
         self.jsonpath = "data/rps"
 
     @commands.slash_command(description="Clear n messages")
@@ -21,13 +23,13 @@ class SlashCommands(commands.Cog):
 
     @commands.slash_command(name="rps", brief="Game of rock, paper, scissors.",description="Challenge the bot to a game of rock, paper, scissors.")
     async def rps(self, inter: disnake.ApplicationCommandInteraction, stats: bool = False):
-        bot_name = self.bot[0].user.name
+        bot_name = self.bot.user.name
         if stats is True:
             rps_json = load_json(self.jsonpath)
             if str(inter.author.id) not in rps_json:
                 await inter.send('You have not played a game of RPS yet.', ephemeral=True)
                 return
-            else:
+            elif str(inter.author.id) in rps_json:
                 stats_embed = disnake.Embed(
                     title=f'RPS Stats for {inter.author.display_name}',
                     description='\u200b',
@@ -40,7 +42,7 @@ class SlashCommands(commands.Cog):
                     stats_embed.set_thumbnail(url=inter.author.display_avatar.url)
                 else:
                     stats_embed.set_thumbnail(url=inter.author.avatar.url)
-                stats_embed.set_footer(text=bot_name, icon_url=self.bot[0].user.avatar.url)
+                stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
                 await inter.send(embed=stats_embed)
         else:   
             choose_weapon = ["Rock","Paper","Scissors"]
@@ -61,7 +63,7 @@ class SlashCommands(commands.Cog):
                 return inter.author == res.user and res.channel == inter.channel
 
             try:
-                res = await inter.bot.wait_for("button_click", check=check, timeout=10)
+                res = await self.bot.wait_for("button_click", check=check, timeout=10)
                 player = res.component.label
                 
                 win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player}!", description = f"> **You win!** {bot_name} chose {comp}.", color = 0x00FF00)
@@ -69,25 +71,25 @@ class SlashCommands(commands.Cog):
                 tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {comp}.", color=0x00FF00)
 
                 if player==comp:
-                    await res.response.edit_message(embed=tie,components=[])
+                    await inter.edit_original_message(embed=tie,components=[])
                     outcome = 'tie'
                 elif player=="Rock" and comp=="Paper":
-                    await res.response.edit_message(embed=lost,components=[])
+                    await inter.edit_original_message(embed=lost,components=[])
                     outcome = 'loss'
                 elif player=="Rock" and comp=="Scissors":
-                    await res.response.edit_message(embed=win,components=[])
+                    await inter.edit_original_message(embed=win,components=[])
                     outcome = 'win'
                 elif player=="Paper" and comp=="Rock":
-                    await res.response.edit_message(embed=win,components=[])
+                    await inter.edit_original_message(embed=win,components=[])
                     outcome = 'win'
                 elif player=="Paper" and comp=="Scissors":
-                    await res.response.edit_message(embed=lost,components=[])
+                    await inter.edit_original_message(embed=lost,components=[])
                     outcome = 'loss'
                 elif player=="Scissors" and comp=="Rock":
-                    await res.response.edit_message(embed=lost,components=[])
+                    await inter.edit_original_message(embed=lost,components=[])
                     outcome = 'loss'
                 elif player=="Scissors" and comp=="Paper":
-                    await res.response.edit_message(embed=win,components=[])
+                    await inter.edit_original_message(embed=win,components=[])
                     outcome = 'win'
                 
                 rps_json = load_json(self.jsonpath)
@@ -114,7 +116,7 @@ class SlashCommands(commands.Cog):
                         rps_json[str(inter.author.id)]["ties"] += 1
                 dump_json(self.jsonpath, rps_json)
             except TimeoutError:
-                await res.response.edit_message(embed=out,components=[])          
+                await inter.edit_original_message(embed=out,components=[])          
         
 
 def setup(client):

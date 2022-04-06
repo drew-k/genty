@@ -3,7 +3,7 @@
 venv/
 
 src/extensions/channels.json
-src/extensions/guild.json
+src/extensions/guilds.json
 src/extensions/rps.json
 gentylogo.png
 __pycache__/
