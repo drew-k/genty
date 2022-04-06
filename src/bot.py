@@ -24,9 +24,9 @@ async def update_status(client: disnake.Client) -> None:
         )
     await client.change_presence(activity=activity)
 
-async def dev_logs(self, id: int) -> disnake.TextChannel:
+async def dev_logs(self, channel_id: int) -> disnake.TextChannel:
     gentry_dev_guild = await self.fetch_guild(956966239736049725)
-    channel = await gentry_dev_guild.fetch_channel(id)
+    channel = await gentry_dev_guild.fetch_channel(channel_id)
     return channel
 
 class Bot(commands.Bot):
