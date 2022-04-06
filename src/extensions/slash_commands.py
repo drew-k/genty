@@ -28,7 +28,6 @@ class SlashCommands(commands.Cog):
             rps_json = load_json(self.jsonpath)
             if str(inter.author.id) not in rps_json:
                 await inter.send('You have not played a game of RPS yet.', ephemeral=True)
-                return
             elif str(inter.author.id) in rps_json:
                 stats_embed = disnake.Embed(
                     title=f'RPS Stats for {inter.author.display_name}',
