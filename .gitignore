@@ -2,8 +2,5 @@
 *env
 venv/
 
-src/data/guilds.json
-src/data/channels.json
-src/data/rps.json
 gentylogo.png
 __pycache__/
