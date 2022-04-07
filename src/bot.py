@@ -33,6 +33,7 @@ class Bot(commands.Bot):
             intents=disnake.Intents().all(),
             sync_commands=True,
             sync_commands_on_cog_unload=True,
+            command_prefix='.'
             )
 
         # Set up logging
@@ -84,13 +85,13 @@ class Bot(commands.Bot):
         self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s", interaction.author, interaction.guild.id, interaction.data.name, exception, extra={"botname": self.user})
         await interaction.response.send_message(content=exception, ephemeral=True)
 
+
 def main():
     """ Starts the bot """
     bot = Bot()
     bot.init_cogs("extensions")
     bot.run(os.getenv("TOKEN"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
-
 
 if __name__ == "__main__":
     main()
