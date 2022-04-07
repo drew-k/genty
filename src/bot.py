@@ -27,6 +27,7 @@ async def update_status(client: disnake.Client) -> None:
     await client.change_presence(activity=activity)
 
 def get_module_logger(module: str):
+        """ Return a logger object in the current module """
     handler = TimedRotatingFileHandler("logs/bot.log", when="midnight", interval=1) # creates a new log file every night at midnight
     handler.setFormatter(logging.Formatter("%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
     logger = logging.getLogger(module)
@@ -95,7 +96,7 @@ def main():
     """ Starts the bot """
     bot = Bot()
     bot.init_cogs("extensions")
-    bot.run(os.getenv("DEV"))
+    bot.run(os.getenv("TOKEN"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 if __name__ == "__main__":
