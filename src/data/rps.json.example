@@ -1,0 +1,7 @@
+{
+    "user.id": {
+        "wins": number_of_wins,
+        "losses": number_of_losses,
+        "ties": number_of_ties
+    }
+}

@@ -24,6 +24,11 @@ async def update_status(client: disnake.Client) -> None:
         )
     await client.change_presence(activity=activity)
 
+async def dev_logs(self ,channel_id: int) -> disnake.TextChannel:
+    genty_dev_guild = await self.fetch_guild(956966239736049725)
+    channel = await genty_dev_guild.fetch_channel(channel_id)
+    return channel
+
 class Bot(commands.Bot):
     """ Creates a Bot class """
     def __init__(self):
@@ -52,15 +57,35 @@ class Bot(commands.Bot):
 
     async def on_guild_join(self, guild):
         print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
+        join_embed = disnake.Embed(
+            title=f"Joined Server: `{guild.id}`", 
+            description = f"> {self.user.display_name} joined {guild.name} with {guild.member_count} members.", 
+            color = disnake.Color.green()
+        )
+        channel = await dev_logs(self, 961243397060960306)
+        await channel.send(embed=join_embed)
         await update_status(self)
 
     async def on_guild_remove(self, guild):
         print(Format.blue + f"> {self.user} left {guild.name}." + Format.reset)
+        leave_embed = disnake.Embed(
+            title=f"Left Server: `{guild.id}`", 
+            description = f"> {self.user.display_name} left {guild.name} with {guild.member_count} members.", 
+            color = disnake.Color.red()
+        )
+        channel = await dev_logs(self, 961243397060960306)
+        await channel.send(embed=leave_embed)
         await update_status(self)
 
     async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
         print(Format.red + f"> {interaction.author} attempted to use /{interaction.data.name} but the interaction failed.\n\tError: {exception}" + Format.reset)
-        await interaction.response.send_message(content=exception, ephemeral=True)
+        error_embed = disnake.Embed(
+            title=f'Error Encountered in {interaction.guild.name} `{interaction.guild.id}`',
+            description=f'> **User:** `{interaction.author.name}#{interaction.author.discriminator}`\n> **Command:** /{interaction.data.name}\n> **Exception:** {exception}',
+            color=disnake.Color.red()
+        )
+        channel = await dev_logs(self, 961397319469789234)
+        await channel.send(embed=error_embed)
 
 def main():
     bot = Bot()
