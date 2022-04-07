@@ -2,7 +2,6 @@
 *env
 venv/
 
-src/extensions/channels.json
-src/extensions/guild.json
+# Misc
 gentylogo.png
 __pycache__/
