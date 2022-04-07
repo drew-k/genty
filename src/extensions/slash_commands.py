@@ -22,6 +22,7 @@ class SlashCommands(commands.Cog):
 
     @commands.slash_command(name="rps", brief="Game of rock, paper, scissors.",description="Challenge the bot to a game of rock, paper, scissors.")
     async def rps(self, inter: disnake.ApplicationCommandInteraction, stats: bool = False):
+        bot_name = self.user.name
         if stats is True:
             rps_json = load_json(self.jsonpath)
             if str(inter.author.id) not in rps_json:
@@ -39,7 +40,7 @@ class SlashCommands(commands.Cog):
                     stats_embed.set_thumbnail(url=inter.author.display_avatar.url)
                 else:
                     stats_embed.set_thumbnail(url=inter.author.avatar.url)
-                stats_embed.set_footer(text='Genty', icon_url=self.bot.user.avatar.url)
+                stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
                 await inter.send(embed=stats_embed)
         else:   
             choose_weapon = ["Rock","Paper","Scissors"]
@@ -63,9 +64,9 @@ class SlashCommands(commands.Cog):
                 res = await self.bot.wait_for("button_click", check=check, timeout=10)
                 player = res.component.label
                 
-                win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player}!", description = f"> **You win!** Genty chose {comp}.", color = 0x00FF00)
-                lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player}!", description = f"> **You lose!** Genty chose {comp}.", color=disnake.Color.red())
-                tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and Genty chose {comp}.", color=0x00FF00)
+                win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player}!", description = f"> **You win!** {bot_name} chose {comp}.", color = 0x00FF00)
+                lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player}!", description = f"> **You lose!** {bot_name} chose {comp}.", color=disnake.Color.red())
+                tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {comp}.", color=0x00FF00)
 
                 if player==comp:
                     await inter.edit_original_message(embed=tie,components=[])
