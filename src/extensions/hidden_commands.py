@@ -5,6 +5,7 @@ from disnake.ext import commands
 
 
 def get_module_logger(module: str):
+    """ Return a logger object in the current module """
     handler = TimedRotatingFileHandler("logs/bot.log", when="midnight", interval=1) # creates a new log file every night at midnight
     handler.setFormatter(logging.Formatter("%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
     logger = logging.getLogger(module)
@@ -24,6 +25,7 @@ class HiddenCommands(commands.Cog):
     @commands.is_owner()
     async def load(self, ctx, path: str):
         """ Load an extension """
+
         await ctx.message.delete()
         try:
             self.bot.load_extension(path)
