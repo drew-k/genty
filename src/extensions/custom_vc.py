@@ -25,6 +25,7 @@ def dump_json(file_path: str, content: dict) -> None:
 
 class CustomVC(commands.Cog):
     """ Lets users create their own customizable voice channels """
+    
     def __init__(self, client):
         self.client = client
         self.jsonpath: str = "data/guilds"
