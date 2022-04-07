@@ -48,40 +48,47 @@ class Bot(commands.Bot):
         for file in os.listdir(folder):
             if file.endswith(".py"):
                 self.load_extension(f"{folder}.{file[:-3]}")
-                self.logger.info(f"Loaded extension: {file}", extra={"botname": self.user})
+                self.logger.info("Loaded extension: %s", file, extra={"botname": self.user})
 
     async def on_ready(self):
+        """ Executed when the bot is functional """
         print(Format.green + f"> {self.user} is ready." + Format.reset)
         self.logger.info("Bot ready", extra={"botname": self.user})
 
     async def on_connect(self):
+        """ Executed when the bot makes a connection with discord """
         await update_status(self)
         print(Format.yellow + f"> {self.user} came online." + Format.reset)
         self.logger.info("Bot came online", extra={"botname": self.user})
 
     async def on_disconnect(self):
+        """ Executed when the bot loses connection with discord """
         print(Format.red + f"> {self.user} went offline." + Format.reset)
         self.logger.critical("Bot went offline", extra={"botname": self.user})
 
     async def on_guild_join(self, guild):
+        """ Executed when the bot joins a new guild """
         print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
-        self.logger.info(f"Joined guild: Name={guild.name} Owner={guild.owner.name}", extra={"botname": self.user})
+        self.logger.info("Joined guild: Name=%s Guild ID=%d Owner=%s", guild.name, guild.id, guild.owner.name, extra={"botname": self.user})
         await update_status(self)
 
     async def on_guild_remove(self, guild):
+        """ Executed when the bot leaves a guild """
         print(Format.blue + f"> {self.user} left {guild.name}." + Format.reset)
-        self.logger.info(f"Left guild: Name={guild.name} Guild ID={guild.id} Owner={guild.owner.name}", extra={"botname": self.user})
+        self.logger.info("Left guild: Name=%s Guild ID=%d Owner=%s", guild.name, guild.id, guild.owner.name, extra={"botname": self.user})
         await update_status(self)
 
     async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
+        """ Executed when a slash command fails """
         print(Format.red + f"> {interaction.author} attempted to use /{interaction.data.name} but the interaction failed.\n\tError: {exception}" + Format.reset)
-        self.logger.error(f"Slash Command Error: User={interaction.author} Guild ID={interaction.guild.id} Interaction={interaction.data.name} Exception={exception}", extra={"botname": self.user})
+        self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s", interaction.author, interaction.guild.id, interaction.data.name, exception, extra={"botname": self.user})
         await interaction.response.send_message(content=exception, ephemeral=True)
 
 def main():
+    """ Starts the bot """
     bot = Bot()
     bot.init_cogs("extensions")
-    bot.run(os.getenv("DEV"))
+    bot.run(os.getenv("TOKEN"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 
