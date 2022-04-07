@@ -26,8 +26,17 @@ async def update_status(client: disnake.Client) -> None:
         )
     await client.change_presence(activity=activity)
 
+def get_module_logger(module: str):
+    handler = TimedRotatingFileHandler("logs/bot.log", when="midnight", interval=1) # creates a new log file every night at midnight
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
+    logger = logging.getLogger(__name__)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    return logger
+
 class Bot(commands.Bot):
     """ Creates a Bot class """
+
     def __init__(self):
         super().__init__(
             intents=disnake.Intents().all(),
@@ -37,11 +46,7 @@ class Bot(commands.Bot):
             )
 
         # Set up logging
-        handler = TimedRotatingFileHandler("logs/bot.log", when="midnight", interval=1) # creates a new log file every night at midnight
-        handler.setFormatter(logging.Formatter("%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
-        self.logger = logging.getLogger(__name__)
-        self.logger.addHandler(handler)
-        self.logger.setLevel(logging.INFO)
+        self.logger = get_module_logger(__name__)
         self.logger.info("Process started: Bot", extra={"botname": self.user})
 
     def init_cogs(self, folder: str) -> None:
@@ -90,7 +95,7 @@ def main():
     """ Starts the bot """
     bot = Bot()
     bot.init_cogs("extensions")
-    bot.run(os.getenv("TOKEN"))
+    bot.run(os.getenv("DEV"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 if __name__ == "__main__":
