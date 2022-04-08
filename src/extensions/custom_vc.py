@@ -198,10 +198,12 @@ class CustomVC(commands.Cog):
             # check if the joined channel was the guild's create channel
             if after.channel.id == guilds_json[str(member.guild.id)]["chan"]:
                 create_category = await self.client.fetch_channel(guilds_json[str(member.guild.id)]["cat"])
-                custom_channel = await create_category.create_voice_channel(name = f"{member.display_name}\'s Channel")
+                custom_channel = await create_category.create_voice_channel(name=f"{member.display_name}\'s Channel")
                 await member.move_to(custom_channel)  # move the member
                 custom_channels = load_json(self.channelpath)
-                custom_channels[str(member.guild.id)][custom_channel.id] = member.id  # dict of dicts
+                # dict of dicts
+                custom_channels[str(member.guild.id)
+                                ][custom_channel.id] = member.id
                 dump_json(self.channelpath, custom_channels)
 
         # Channel deletion
@@ -211,23 +213,28 @@ class CustomVC(commands.Cog):
             if str(before.channel.id) in custom_channels[str(member.guild.id)]:
                 if before.channel.members == []:  # check if the channel is empty
                     await before.channel.delete(reason="Custom channel empty.")
-                    custom_channels[str(member.guild.id)].pop(str(before.channel.id))
+                    custom_channels[str(member.guild.id)].pop(
+                        str(before.channel.id))
                 else:
                     # check if the user that left was the owner
                     if member.id == custom_channels[str(member.guild.id)][str(before.channel.id)]:
                         # passes ownership on to a random person
-                        new_owner = before.channel.members[randint(0, len(before.channel.members) - 1)]
-                        custom_channels[str(member.guild.id)][str(before.channel.id)] = new_owner.id
+                        new_owner = before.channel.members[randint(
+                            0, len(before.channel.members) - 1)]
+                        custom_channels[str(member.guild.id)][str(
+                            before.channel.id)] = new_owner.id
                         overwrites = before.channel.overwrites
-                        overwrites[new_owner] = disnake.PermissionOverwrite(manage_channels=True, create_instant_invite=True, move_members=True)
-                        overwrites[member] = disnake.PermissionOverwrite(manage_channels=None, create_instant_invite=None, move_members=None)
+                        overwrites[new_owner] = disnake.PermissionOverwrite(
+                            manage_channels=True, create_instant_invite=True, move_members=True)
+                        overwrites[member] = disnake.PermissionOverwrite(
+                            manage_channels=None, create_instant_invite=None, move_members=None)
                         await before.channel.edit(overwrites=overwrites)
             dump_json(self.channelpath, custom_channels)
 
     @commands.Cog.listener("on_connect")
     async def on_connect(self):
         """ Check for any channel changes while offline """
-        guilds_json=load_json(self.jsonpath)
+        guilds_json = load_json(self.jsonpath)
         for guild in self.client.guilds:
             category: disnake.CategoryChannel = None
             channel: disnake.VoiceChannel = None
@@ -260,8 +267,8 @@ class CustomVC(commands.Cog):
         for guild in self.client.guilds:
             if str(guild.id) not in guilds_json:
                 guilds_json[str(guild.id)] = {}
-                category=await guild.create_category_channel(name="Custom Voice Channels")
-                channel=await category.create_voice_channel(name="Click to Create")
+                category = await guild.create_category_channel(name="Custom Voice Channels")
+                channel = await category.create_voice_channel(name="Click to Create")
                 guilds_json[str(guild.id)]["cat"] = category.id
                 guilds_json[str(guild.id)]["chan"] = channel.id
                 dump_json(self.jsonpath, guilds_json)
