@@ -25,6 +25,7 @@ def dump_json(file_path: str, content: dict) -> None:
 
 class CustomVC(commands.Cog):
     """ Lets users create their own customizable voice channels """
+
     def __init__(self, client):
         self.client = client
         self.jsonpath: str = "data/guilds"
@@ -54,6 +55,9 @@ class CustomVC(commands.Cog):
                     overwrites = inter.author.voice.channel.overwrites
                     overwrites[user] = disnake.PermissionOverwrite(connect=False)
                     await inter.author.voice.channel.edit(overwrites=overwrites)
+                    # check if the blacklisted user is in the owner's channel
+                    if user.voice is not None and user.voice.channel is inter.author.voice.channel:
+                        await user.move_to(None) # kick the blacklisted user
                     await inter.response.send_message(content=f"{user.display_name} is now blacklisted.", ephemeral=True)
         if not inter.response.is_done():
             await inter.response.send_message(content=f"Failed to blacklist {user.display_name}.", ephemeral=True)

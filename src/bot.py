@@ -1,4 +1,6 @@
 import os
+import logging
+from logging.handlers import TimedRotatingFileHandler
 import disnake
 from disnake.ext import commands
 from dotenv import load_dotenv
@@ -24,13 +26,18 @@ async def update_status(client: disnake.Client) -> None:
         )
     await client.change_presence(activity=activity)
 
-async def dev_logs(self, channel_id: int) -> disnake.TextChannel:
-    gentry_dev_guild = await self.fetch_guild(956966239736049725)
-    channel = await gentry_dev_guild.fetch_channel(channel_id)
-    return channel
+def get_module_logger(module: str):
+    """ Return a logger object in the current module """
+    handler = TimedRotatingFileHandler("logs/bot.log", when="midnight", interval=1) # creates a new log file every night at midnight
+    handler.setFormatter(logging.Formatter("%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
+    logger = logging.getLogger(module)
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+    return logger
 
 class Bot(commands.Bot):
     """ Creates a Bot class """
+
     def __init__(self):
         super().__init__(
             intents=disnake.Intents().all(),
@@ -39,60 +46,58 @@ class Bot(commands.Bot):
             command_prefix='.'
             )
 
+        # Set up logging
+        self.logger = get_module_logger(__name__)
+        self.logger.info("Process started: Bot", extra={"botname": self.user})
+
     def init_cogs(self, folder: str) -> None:
         """ Initialize cogs in provided folder """
         for file in os.listdir(folder):
             if file.endswith(".py"):
                 self.load_extension(f"{folder}.{file[:-3]}")
+                self.logger.info("Loaded extension: %s", file, extra={"botname": self.user})
 
     async def on_ready(self):
+        """ Executed when the bot is functional """
         print(Format.green + f"> {self.user} is ready." + Format.reset)
+        self.logger.info("Bot ready", extra={"botname": self.user})
 
     async def on_connect(self):
+        """ Executed when the bot makes a connection with discord """
         await update_status(self)
         print(Format.yellow + f"> {self.user} came online." + Format.reset)
+        self.logger.info("Bot came online", extra={"botname": self.user})
 
     async def on_disconnect(self):
+        """ Executed when the bot loses connection with discord """
         print(Format.red + f"> {self.user} went offline." + Format.reset)
+        self.logger.critical("Bot went offline", extra={"botname": self.user})
 
     async def on_guild_join(self, guild):
+        """ Executed when the bot joins a new guild """
         print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
-        join_embed = disnake.Embed(
-            title=f"Joined Server: `{guild.id}`", 
-            description = f"> {self.user.display_name} joined {guild.name} with {guild.member_count} members.", 
-            color = disnake.Color.green()
-        )
-        genty_guild = await self.fetch_guild(956966239736049725)
-        channel = await genty_guild.fetch_channel(961243397060960306)
-        await channel.send(embed=join_embed)
+        self.logger.info("Joined guild: Name=%s Guild ID=%d Owner=%s", guild.name, guild.id, guild.owner.name, extra={"botname": self.user})
         await update_status(self)
 
     async def on_guild_remove(self, guild):
+        """ Executed when the bot leaves a guild """
         print(Format.blue + f"> {self.user} left {guild.name}." + Format.reset)
-        leave_embed = disnake.Embed(
-            title=f"Left Server: `{guild.id}`", 
-            description = f"> {self.user.display_name} left {guild.name} with {guild.member_count} members.", 
-            color = disnake.Color.red()
-        )
-        genty_guild = await self.fetch_guild(956966239736049725)
-        channel = await genty_guild.fetch_channel(961243397060960306)
-        await channel.send(embed=leave_embed)
+        self.logger.info("Left guild: Name=%s Guild ID=%d Owner=%s", guild.name, guild.id, guild.owner.name, extra={"botname": self.user})
         await update_status(self)
 
     async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
+        """ Executed when a slash command fails """
         print(Format.red + f"> {interaction.author} attempted to use /{interaction.data.name} but the interaction failed.\n\tError: {exception}" + Format.reset)
-        error_embed = disnake.Embed(
-            title=f'Error Encountered in {interaction.guild.name} `{interaction.guild.id}`',
-            description=f'> **User:** `{interaction.author.name}#{interaction.author.discriminator}`\n> **Command:** /{interaction.data.name}\n> **Exception:** {exception}',
-            color=disnake.Color.red()
-        )
-        channel = await dev_logs(self, 961397319469789234)
-        await channel.send(embed=error_embed)
+        self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s", interaction.author, interaction.guild.id, interaction.data.name, exception, extra={"botname": self.user})
+        await interaction.response.send_message(content=exception, ephemeral=True)
+
 
 def main():
+    """ Starts the bot """
     bot = Bot()
     bot.init_cogs("extensions")
     bot.run(os.getenv("TOKEN"))
+    bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 if __name__ == "__main__":
     main()
