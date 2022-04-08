@@ -2,27 +2,52 @@ import disnake
 from disnake.ext import commands
 from disnake.ui import Button
 from disnake import ButtonStyle
-from random import choice
+import random
 from extensions.custom_vc import load_json, dump_json
 import asyncio
 
-def rps_outcome(self, player: disnake.Member, outcome: str) -> None:
-        str_player_id = str(player.id)
-        rps_json = load_json(self.jsonpath)
-        outcomes = ['wins', 'losses', 'ties']
-        if str_player_id in rps_json:
-            for stats in rps_json[str_player_id]:
-                if stats == outcome:
-                    rps_json[str_player_id][outcome] += 1
-        else:
-            rps_json[str_player_id] = {}
-            for stat in outcomes:
-                if stat == outcome:
-                    rps_json[str_player_id][stat] = 1
-                else:
-                    rps_json[str_player_id][stat] = 0
-        dump_json(self.jsonpath, rps_json)
+choose_weapon = ['Rock', 'Paper', 'Scissors']
+
+def update_stats(self, player: disnake.Member, outcome: str) -> None:
+    """" Update player stats in rps.json """
+    str_player_id = str(player.id)
+    rps_json = load_json(self.jsonpath)
+    outcomes = ['wins', 'losses', 'ties']
+    if str_player_id in rps_json:
+        for stats in rps_json[str_player_id]:
+            if stats == outcome:
+                rps_json[str_player_id][outcome] += 1
+    else:
+        rps_json[str_player_id] = {}
+        for stat in outcomes:
+            if stat == outcome:
+                rps_json[str_player_id][stat] = 1
+            else:
+                rps_json[str_player_id][stat] = 0
+    dump_json(self.jsonpath, rps_json)
             
+def is_draw(player_choice, computer_choice)-> bool:
+    """ Check if game is a draw """
+    if player_choice == computer_choice:
+        return True
+
+def get_comp_choice()-> str:
+    """ Bot will choose Rock, Paper or Scissors """
+    computer_choice = random.choice(choose_weapon)
+    return computer_choice
+
+def player_won(player_choice_str: str, computer_choice_str: str) -> bool:
+    """ Check to see who won """
+    player_choice = player_choice_str[0].lower()
+    computer_choice = computer_choice_str[0].lower()
+    if player_choice == 'r' and computer_choice == 's':
+        return True
+    elif player_choice == 's' and computer_choice == 'p':
+        return True
+    elif player_choice == 'p' and computer_choice == 'r':
+        return True
+    else:
+        return False
 
 class RPS(commands.Cog):
     """ Set up basic slash commands """
@@ -54,8 +79,6 @@ class RPS(commands.Cog):
                 stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
                 await inter.send(embed=stats_embed)
         else:   
-            choose_weapon = ["Rock","Paper","Scissors"]
-            comp = choice(choose_weapon)
             yet = disnake.Embed(title=f"{inter.author.display_name}'s Rock Paper Scissors Game!", description = "> You haven't clicked on any button yet!",color = 0xFFEA00)
             out = disnake.Embed(title=f"{inter.author.display_name}, you didn't make a choice on time!", description = "> **Timed Out!**", color=disnake.Color.red())
 
@@ -73,22 +96,23 @@ class RPS(commands.Cog):
 
             try:
                 res = await self.bot.wait_for("button_click", check=check, timeout=10)
-                player = res.component.label
+                player_choice = res.component.label
+                computer_choice = get_comp_choice()
                 
-                win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player}!", description = f"> **You win!** {bot_name} chose {comp}.", color = 0x00FF00)
-                lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player}!", description = f"> **You lose!** {bot_name} chose {comp}.", color=disnake.Color.red())
-                tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {comp}.", color=0x00FF00)
+                win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player_choice}!", description = f"> **You win!** {bot_name} chose {computer_choice}.", color = disnake.Color.green())
+                lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player_choice}!", description = f"> **You lose!** {bot_name} chose {computer_choice}.", color=disnake.Color.red())
+                tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {computer_choice}.", color=disnake.Color.yellow())
 
-                if player==comp:
+                if is_draw(player_choice, computer_choice):
                     await inter.edit_original_message(embed=tie,components=[])
                     outcome = 'ties'
-                elif player=="Rock" and comp=="Paper" or player=="Paper" and comp=="Scissors" or player=="Scissors" and comp=="Rock":
-                    await inter.edit_original_message(embed=lost,components=[])
-                    outcome = 'losses'
-                elif player=="Rock" and comp=="Scissors" or player=="Paper" and comp=="Rock" or player=="Scissors" and comp=="Paper":
+                elif player_won(player_choice, computer_choice):
                     await inter.edit_original_message(embed=win,components=[])
                     outcome = 'wins'
-                rps_outcome(self, inter.author, outcome)
+                else:
+                    await inter.edit_original_message(embed=lost,components=[])
+                    outcome = 'losses'
+                update_stats(self, inter.author, outcome)
                 
             except asyncio.TimeoutError:
                 await inter.edit_original_message(embed=out,components=[])          
