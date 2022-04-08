@@ -55,7 +55,7 @@ class Bot(commands.Bot):
         self.logger = get_module_logger(__name__)
         self.logger.info("Process started: Bot", extra={"botname": self.user})
 
-    def init_cogs(self, folder: str) -> None:
+    def init_cogs(self, folder: str = "extensions") -> None:
         """ Initialize cogs in provided folder """
         for file in os.listdir(folder):
             if file.endswith(".py"):
@@ -106,8 +106,8 @@ class Bot(commands.Bot):
 def main():
     """ Starts the bot """
     bot = Bot()
-    bot.init_cogs("extensions")
-    bot.run(os.getenv("TOKEN"))
+    bot.init_cogs()
+    bot.run(os.getenv("DEV"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 
