@@ -41,13 +41,14 @@ def player_won(player_choice_str: str, computer_choice_str: str) -> bool:
     player_choice = player_choice_str[0].lower()
     computer_choice = computer_choice_str[0].lower()
     if player_choice == 'r' and computer_choice == 's':
-        return True
+        outcome = True
     elif player_choice == 's' and computer_choice == 'p':
-        return True
+        outcome = True
     elif player_choice == 'p' and computer_choice == 'r':
-        return True
+        outcome = True
     else:
-        return False
+        outcome = False
+    return outcome
 
 class RPS(commands.Cog):
     """ Set up basic slash commands """

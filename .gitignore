@@ -4,3 +4,5 @@ venv/
 
 gentylogo.png
 __pycache__/
+.vscode/launch.json
+src/data/rps.json
