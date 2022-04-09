@@ -71,6 +71,8 @@ List of commands:
 | /uptime                     | Bot owner        | Gets the current uptime of the bot   |
 | /rps \<stats:True or False\>| Anyone           | Play rps with the bot and check stats|
 
+`/load` and `/unload` both expect a file path in format `dir.module` such as `extensions.slash_commands`
+
 Commands in `src/extensions/custom_vc.py`:
 
 | Command                                | Permission       | Description                                                               |

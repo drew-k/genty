@@ -114,7 +114,6 @@ class RPS(commands.Cog):
                     await inter.edit_original_message(embed=lost,components=[])
                     outcome = 'losses'
                 update_stats(self, inter.author, outcome)
-                
             except asyncio.TimeoutError:
                 await inter.edit_original_message(embed=out,components=[])          
         
