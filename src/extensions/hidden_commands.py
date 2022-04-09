@@ -29,6 +29,7 @@ class HiddenCommands(commands.Cog):
     @commands.is_owner()
     async def load(self, ctx, path: str):
         """ Load an extension """
+
         await ctx.message.delete()
         path = f"extensions.{path}"
         try:

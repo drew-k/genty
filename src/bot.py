@@ -27,7 +27,6 @@ async def update_status(client: disnake.Client) -> None:
     )
     await client.change_presence(activity=activity)
 
-
 def get_module_logger(module: str):
     """ Return a logger object in the current module """
     handler = TimedRotatingFileHandler(
@@ -39,7 +38,7 @@ def get_module_logger(module: str):
     logger.setLevel(logging.INFO)
     return logger
 
-
+ 
 class Bot(commands.Bot):
     """ Creates a Bot class """
 
