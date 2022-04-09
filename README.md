@@ -30,10 +30,14 @@ Install modules in requirements.txt
 pip install -r requirements.txt
 ```
 
-Place your token in an environment variable (.env) in the root directory with the following syntax:
+Create an environment variable with your bot's token:
 
 ```text
-TOKEN=[your_token_here]
+// Windows
+set TOKEN=[your_token_here]
+
+// Linux & MacOS
+export TOKEN=[your_token_here]
 ```
 
 Start the bot
