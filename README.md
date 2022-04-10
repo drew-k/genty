@@ -5,6 +5,11 @@
 [![Version](https://img.shields.io/github/v/release/drew-k/genty?include_prereleases)](https://github.com/drew-k/genty/releases)
 [![Support Server](https://img.shields.io/discord/960915291502686298)](https://discord.gg/a8qwkJvshH)
 
+## Invite bot to your server
+
+Click [here](https://discord.com/api/oauth2/authorize?client_id=873165810171002881&permissions=8&scope=applications.commands%20bot) 
+to invite this bot to your server. 
+
 ## Requirements
 
 To self-host, you will need the following:
@@ -88,12 +93,6 @@ Commands in `src/extensions/custom_vc.py`:
 | /vc_rename \<Optional: name\>          | Channel owner    | Renames a custom channel to `name`                                        |
 | /vc_lock                               | Channel owner    | Locks a custom channel (whitelisted users can still join)                 |
 | /vc_unlock                             | Channel owner    | Unlocks a custom channel (default setting, blacklisted users cannot join) |
-
-
-## Invite bot to your server
-
-Click [here](https://discord.com/api/oauth2/authorize?client_id=873165810171002881&permissions=8&scope=applications.commands%20bot) 
-to invite this bot to your server. 
 
 ## [Contributors](https://github.com/drew-k/genty/graphs/contributors)
 
