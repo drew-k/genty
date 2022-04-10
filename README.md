@@ -92,7 +92,10 @@ Commands in `src/extensions/custom_vc.py`:
 | /vc_lock                               | Channel owner    | Locks a custom channel (whitelisted users can still join)                 |
 | /vc_unlock                             | Channel owner    | Unlocks a custom channel (default setting, blacklisted users cannot join) |
 
-## [Contributors](https://github.com/drew-k/genty/graphs/contributors)
+## Contributing
+We are always looking for new ideas and perspectives for Genty. Feel free to contribute. 
+
+[Contributors](https://github.com/drew-k/genty/graphs/contributors)
 
 ## License
 
