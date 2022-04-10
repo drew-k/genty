@@ -81,8 +81,6 @@ List of commands:
 | /rps \<Optional: stats\>    | Anyone           | Play rps with the bot and check stats|
 | /help \<Optional: command\> | Anyone           | Display a help menu                  |
 
-`/load` and `/unload` both expect a file path in format `dir.module` such as `extensions.slash_commands`
-
 Commands in `src/extensions/custom_vc.py`:
 
 | Command                                | Permission       | Description                                                               |
