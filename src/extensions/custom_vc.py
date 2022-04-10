@@ -1,3 +1,5 @@
+""" Custom Voice Channels module """
+
 import json
 from random import randint
 import disnake

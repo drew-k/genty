@@ -1,4 +1,4 @@
-""" Main bot module """
+""" Help command module """
 
 import datetime
 from typing import List

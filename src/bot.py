@@ -1,3 +1,5 @@
+""" Main bot module """
+
 import os
 import logging
 from logging.handlers import TimedRotatingFileHandler

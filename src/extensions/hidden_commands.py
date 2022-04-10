@@ -1,3 +1,5 @@
+""" Hidden commands module """
+
 import logging
 from logging.handlers import TimedRotatingFileHandler
 import disnake

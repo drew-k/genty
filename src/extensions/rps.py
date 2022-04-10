@@ -1,3 +1,5 @@
+""" RPS module """
+
 import disnake
 from disnake.ext import commands
 from disnake.ui import Button
@@ -25,7 +27,7 @@ def update_stats(self, player: disnake.Member, outcome: str) -> None:
             else:
                 rps_json[str_player_id][stat] = 0
     dump_json(self.jsonpath, rps_json)
-            
+
 def is_draw(player_choice, computer_choice)-> bool:
     """ Check if game is a draw """
     if player_choice == computer_choice:
@@ -55,7 +57,7 @@ class RPS(commands.Cog):
 
     def __init__(self, bot):
         self.bot:commands.Bot = bot
-        self.jsonpath = "data/rps"    
+        self.jsonpath = "data/rps"
 
     @commands.slash_command(name="rps", brief="Game of rock, paper, scissors.",description="Challenge the bot to a game of rock, paper, scissors.")
     async def rps(self, inter: disnake.ApplicationCommandInteraction, stats: bool = False):
@@ -79,7 +81,7 @@ class RPS(commands.Cog):
                     stats_embed.set_thumbnail(url=inter.author.avatar.url)
                 stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
                 await inter.send(embed=stats_embed)
-        else:   
+        else:
             yet = disnake.Embed(title=f"{inter.author.display_name}'s Rock Paper Scissors Game!", description = "> You haven't clicked on any button yet!",color = 0xFFEA00)
             out = disnake.Embed(title=f"{inter.author.display_name}, you didn't make a choice on time!", description = "> **Timed Out!**", color=disnake.Color.red())
 
@@ -99,7 +101,7 @@ class RPS(commands.Cog):
                 res = await self.bot.wait_for("button_click", check=check, timeout=10)
                 player_choice = res.component.label
                 computer_choice = get_comp_choice()
-                
+
                 win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player_choice}!", description = f"> **You win!** {bot_name} chose {computer_choice}.", color = disnake.Color.green())
                 lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player_choice}!", description = f"> **You lose!** {bot_name} chose {computer_choice}.", color=disnake.Color.red())
                 tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {computer_choice}.", color=disnake.Color.yellow())
@@ -115,8 +117,8 @@ class RPS(commands.Cog):
                     outcome = 'losses'
                 update_stats(self, inter.author, outcome)
             except asyncio.TimeoutError:
-                await inter.edit_original_message(embed=out,components=[])          
-        
+                await inter.edit_original_message(embed=out,components=[])
+
 
 def setup(client):
     client.add_cog(RPS(client))

@@ -1,3 +1,5 @@
+""" Uptime module """
+
 from datetime import datetime
 import disnake
 from disnake.ext import commands
@@ -5,7 +7,7 @@ from disnake.ext import commands
 
 class Uptime(commands.Cog):
     """ Report the uptime of the bot, starting from when this module was loaded """
-    
+
     def __init__(self, client):
         self.client = client
         self.startup_time = datetime.now().replace(microsecond=0) # used in the uptime command
