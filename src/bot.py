@@ -38,7 +38,6 @@ def get_module_logger(module: str):
     logger.setLevel(logging.INFO)
     return logger
 
- 
 class Bot(commands.Bot):
     """ Creates a Bot class """
 
@@ -47,9 +46,9 @@ class Bot(commands.Bot):
             intents=disnake.Intents().all(),
             sync_commands=True,
             sync_commands_on_cog_unload=True,
-            command_prefix='.'
+            command_prefix='.',
+            help_command=None,
         )
-
         # Set up logging
         self.logger = get_module_logger(__name__)
         self.logger.info("Process started: Bot", extra={"botname": self.user})
@@ -61,6 +60,7 @@ class Bot(commands.Bot):
                 self.load_extension(f"{folder}.{file[:-3]}")
                 self.logger.info("Loaded extension: %s", file,
                                  extra={"botname": self.user})
+
 
     async def on_ready(self):
         """ Executed when the bot is functional """
