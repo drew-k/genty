@@ -87,16 +87,17 @@ class Help(commands.Cog):
         embeds = []
         for slash_command in self.client.global_slash_commands:
             embed = disnake.Embed(
-                color=disnake.Color.from_rgb(253,213,181),
+                color=disnake.Color.from_rgb(253, 213, 181),
                 title="/" + slash_command.name,
-                description = slash_command.description,
-                timestamp = datetime.datetime.now(),
+                description=slash_command.description,
+                timestamp=datetime.datetime.now(),
                 )
             if command == slash_command.name:  # check if there is a specific command requested
                 embeds.insert(0, embed)
             else:
                 embeds.append(embed)
-        await inter.send(embed = embeds[0], view=self.Menu(embeds))
+        await inter.send(embed=embeds[0], view=self.Menu(embeds))
+
 
 def setup(client):
     """ Load the extension """
