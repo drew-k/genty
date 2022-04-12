@@ -10,6 +10,7 @@ import asyncio
 
 choose_weapon = ['Rock', 'Paper', 'Scissors']
 
+
 def update_stats(self, player: disnake.Member, outcome: str) -> None:
     """" Update player stats in rps.json """
     str_player_id = str(player.id)
@@ -28,15 +29,18 @@ def update_stats(self, player: disnake.Member, outcome: str) -> None:
                 rps_json[str_player_id][stat] = 0
     dump_json(self.jsonpath, rps_json)
 
-def is_draw(player_choice, computer_choice)-> bool:
+
+def is_draw(player_choice, computer_choice) -> bool:
     """ Check if game is a draw """
     if player_choice == computer_choice:
         return True
 
-def get_comp_choice()-> str:
+
+def get_comp_choice() -> str:
     """ Bot will choose Rock, Paper or Scissors """
     computer_choice = random.choice(choose_weapon)
     return computer_choice
+
 
 def player_won(player_choice_str: str, computer_choice_str: str) -> bool:
     """ Check to see who won """
@@ -52,14 +56,19 @@ def player_won(player_choice_str: str, computer_choice_str: str) -> bool:
         outcome = False
     return outcome
 
+
 class RPS(commands.Cog):
     """ Set up basic slash commands """
 
     def __init__(self, bot):
-        self.bot:commands.Bot = bot
+        self.bot: commands.Bot = bot
         self.jsonpath = "data/rps"
 
-    @commands.slash_command(name="rps", brief="Game of rock, paper, scissors.",description="Challenge the bot to a game of rock, paper, scissors.")
+    @commands.slash_command(
+        name="rps",
+        brief="Game of rock, paper, scissors.",
+        description="Challenge the bot to a game of rock, paper, scissors."
+    )
     async def rps(self, inter: disnake.ApplicationCommandInteraction, stats: bool = False):
         bot_name = self.bot.user.name
         if stats is True:
@@ -72,18 +81,35 @@ class RPS(commands.Cog):
                     description='\u200b',
                     color=disnake.Color.orange()
                 )
-                stats_embed.add_field(name='Wins:', value=f'> {rps_json[str(inter.author.id)]["wins"]}')
-                stats_embed.add_field(name='Losses:', value=f'> {rps_json[str(inter.author.id)]["losses"]}')
-                stats_embed.add_field(name='Ties:', value=f'> {rps_json[str(inter.author.id)]["ties"]}')
-                if inter.author.avatar == None:
+                stats_embed.add_field(
+                    name='Wins:',
+                    value=f'> {rps_json[str(inter.author.id)]["wins"]}'
+                )
+                stats_embed.add_field(
+                    name='Losses:',
+                    value=f'> {rps_json[str(inter.author.id)]["losses"]}'
+                )
+                stats_embed.add_field(
+                    name='Ties:',
+                    value=f'> {rps_json[str(inter.author.id)]["ties"]}'
+                )
+                if inter.author.avatar is None:
                     stats_embed.set_thumbnail(url=inter.author.display_avatar.url)
                 else:
                     stats_embed.set_thumbnail(url=inter.author.avatar.url)
                 stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
                 await inter.send(embed=stats_embed)
         else:
-            yet = disnake.Embed(title=f"{inter.author.display_name}'s Rock Paper Scissors Game!", description = "> You haven't clicked on any button yet!",color = 0xFFEA00)
-            out = disnake.Embed(title=f"{inter.author.display_name}, you didn't make a choice on time!", description = "> **Timed Out!**", color=disnake.Color.red())
+            yet = disnake.Embed(
+                title=f"{inter.author.display_name}'s Rock Paper Scissors Game!",
+                description="> You haven't clicked on any button yet!",
+                color=0xFFEA00
+            )
+            out = disnake.Embed(
+                title=f"{inter.author.display_name}, you didn't make a choice on time!",
+                description="> **Timed Out!**",
+                color=disnake.Color.red()
+            )
 
             await inter.send(
                 embed=yet,
@@ -102,22 +128,46 @@ class RPS(commands.Cog):
                 player_choice = res.component.label
                 computer_choice = get_comp_choice()
 
-                win = disnake.Embed(title=f"{inter.author.display_name}, you won with {player_choice}!", description = f"> **You win!** {bot_name} chose {computer_choice}.", color = disnake.Color.green())
-                lost = disnake.Embed(title=f"{inter.author.display_name}, you lost with {player_choice}!", description = f"> **You lose!** {bot_name} chose {computer_choice}.", color=disnake.Color.red())
-                tie = disnake.Embed(title=f"{inter.author.display_name}, it was a tie!",description = f"> **It was a tie!** You and {bot_name} chose {computer_choice}.", color=disnake.Color.yellow())
+                win = disnake.Embed(
+                    title=f"{inter.author.display_name}, you won with {player_choice}!",
+                    description=f"> **You win!** {bot_name} chose {computer_choice}.",
+                    color=disnake.Color.green()
+                )
+                lost = disnake.Embed(
+                    title=f"{inter.author.display_name}, you lost with {player_choice}!",
+                    description=f"> **You lose!** {bot_name} chose {computer_choice}.",
+                    color=disnake.Color.red()
+                )
+                tie = disnake.Embed(
+                    title=f"{inter.author.display_name}, it was a tie!",
+                    description=f"> **It was a tie!** You and {bot_name} chose {computer_choice}.",
+                    color=disnake.Color.yellow()
+                )
 
                 if is_draw(player_choice, computer_choice):
-                    await inter.edit_original_message(embed=tie,components=[])
+                    await inter.edit_original_message(
+                        embed=tie,
+                        components=[]
+                    )
                     outcome = 'ties'
                 elif player_won(player_choice, computer_choice):
-                    await inter.edit_original_message(embed=win,components=[])
+                    await inter.edit_original_message(
+                        embed=win,
+                        components=[]
+                    )
                     outcome = 'wins'
                 else:
-                    await inter.edit_original_message(embed=lost,components=[])
+                    await inter.edit_original_message(
+                        embed=lost,
+                        components=[]
+                    )
                     outcome = 'losses'
                 update_stats(self, inter.author, outcome)
             except asyncio.TimeoutError:
-                await inter.edit_original_message(embed=out,components=[])
+                await inter.edit_original_message(
+                    embed=out,
+                    components=[]
+                )
 
 
 def setup(client):

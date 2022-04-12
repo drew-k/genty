@@ -29,16 +29,19 @@ async def update_status(client: disnake.Client) -> None:
     )
     await client.change_presence(activity=activity)
 
+
 def get_module_logger(module: str):
     """ Return a logger object in the current module """
+    # creates a new log file every night at midnight
     handler = TimedRotatingFileHandler(
-        "logs/bot.log", when="midnight", interval=1)  # creates a new log file every night at midnight
+        "logs/bot.log", when="midnight", interval=1)
     handler.setFormatter(logging.Formatter(
         "%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
     logger = logging.getLogger(module)
     logger.addHandler(handler)
     logger.setLevel(logging.INFO)
     return logger
+
 
 class Bot(commands.Bot):
     """ Creates a Bot class """
@@ -63,7 +66,6 @@ class Bot(commands.Bot):
                 self.logger.info("Loaded extension: %s", file,
                                  extra={"botname": self.user})
 
-
     async def on_ready(self):
         """ Executed when the bot is functional """
         print(Format.green + f"> {self.user} is ready." + Format.reset)
@@ -82,10 +84,13 @@ class Bot(commands.Bot):
 
     async def on_guild_join(self, guild):
         """ Executed when the bot joins a new guild """
-        print(Format.blue +
-              f"> {self.user} joined {guild.name}." + Format.reset)
-        self.logger.info("Joined guild: Name=%s Guild ID=%d Owner=%s", guild.name,
-                         guild.id, guild.owner.name, extra={"botname": self.user})
+        print(Format.blue + f"> {self.user} joined {guild.name}." + Format.reset)
+        self.logger.info("Joined guild: Name=%s Guild ID=%d Owner=%s",
+                         guild.name,
+                         guild.id,
+                         guild.owner.name,
+                         extra={"botname": self.user}
+                         )
         await update_status(self)
 
     async def on_guild_remove(self, guild):
@@ -95,12 +100,25 @@ class Bot(commands.Bot):
                          guild.id, guild.owner.name, extra={"botname": self.user})
         await update_status(self)
 
-    async def on_slash_command_error(self, interaction: disnake.AppCmdInter, exception: commands.CommandError):
+    async def on_slash_command_error(
+        self,
+        interaction: disnake.AppCmdInter,
+        exception: commands.CommandError
+    ):
         """ Executed when a slash command fails """
+        error = f"> %s attempted to use /%s but the interaction failed.\n\tError: %s",
+        interaction.author,
+        interaction.data.name,
+        exception
         print(
-            Format.red + f"> {interaction.author} attempted to use /{interaction.data.name} but the interaction failed.\n\tError: {exception}" + Format.reset)
-        self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s", interaction.author,
-                          interaction.guild.id, interaction.data.name, exception, extra={"botname": self.user})
+            Format.red + error + Format.reset)
+        self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s",
+                          interaction.author,
+                          interaction.guild.id,
+                          interaction.data.name,
+                          exception,
+                          extra={"botname": self.user}
+                          )
         await interaction.response.send_message(content=exception, ephemeral=True)
 
 
@@ -108,7 +126,7 @@ def main():
     """ Starts the bot """
     bot = Bot()
     bot.init_cogs()
-    bot.run(os.getenv("TOKEN"))
+    bot.run(os.getenv("DEV"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 

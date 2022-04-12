@@ -26,7 +26,11 @@ class Help(commands.Cog):
                 embed.set_footer(text=f"Page {i + 1} of {len(self.embeds)}")
 
         @disnake.ui.button(emoji="⏪", style=disnake.ButtonStyle.blurple)
-        async def first_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+        async def first_page(
+            self,
+            button: disnake.ui.Button,
+            interaction: disnake.MessageInteraction
+        ):
             """ Moves the pagination back to the first embed """
             self.embed_count = 0
             embed = self.embeds[self.embed_count]
@@ -39,7 +43,11 @@ class Help(commands.Cog):
             await interaction.response.edit_message(embed=embed, view=self)
 
         @disnake.ui.button(emoji="◀", style=disnake.ButtonStyle.secondary)
-        async def prev_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+        async def prev_page(
+            self,
+            button: disnake.ui.Button,
+            interaction: disnake.MessageInteraction
+        ):
             """ Moves the pagination to the previous embed """
             self.embed_count -= 1
             embed = self.embeds[self.embed_count]
@@ -57,7 +65,11 @@ class Help(commands.Cog):
             await interaction.response.edit_message(view=None)
 
         @disnake.ui.button(emoji="▶", style=disnake.ButtonStyle.secondary)
-        async def next_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+        async def next_page(
+            self,
+            button: disnake.ui.Button,
+            interaction: disnake.MessageInteraction
+        ):
             """ Moves the pagination to the next embed """
             self.embed_count += 1
             embed = self.embeds[self.embed_count]
@@ -70,7 +82,11 @@ class Help(commands.Cog):
             await interaction.response.edit_message(embed=embed, view=self)
 
         @disnake.ui.button(emoji="⏩", style=disnake.ButtonStyle.blurple)
-        async def last_page(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
+        async def last_page(
+            self,
+            button: disnake.ui.Button,
+            interaction: disnake.MessageInteraction
+        ):
             """ Moves the pagination to the last embed """
             self.embed_count = len(self.embeds) - 1
             embed = self.embeds[self.embed_count]
@@ -82,7 +98,11 @@ class Help(commands.Cog):
             await interaction.response.edit_message(embed=embed, view=self)
 
     @commands.slash_command(name="help", description="Get additional help")
-    async def help_slash_command(self, inter=disnake.ApplicationCommandInteraction, command: str = None):
+    async def help_slash_command(
+        self,
+        inter=disnake.ApplicationCommandInteraction,
+        command: str = None
+    ):
         """ Displays a paginator help menu """
         embeds = []
         for slash_command in self.client.global_slash_commands:
@@ -91,7 +111,7 @@ class Help(commands.Cog):
                 title="/" + slash_command.name,
                 description=slash_command.description,
                 timestamp=datetime.datetime.now(),
-                )
+            )
             if command == slash_command.name:  # check if there is a specific command requested
                 embeds.insert(0, embed)
             else:
