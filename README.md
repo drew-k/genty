@@ -1,5 +1,6 @@
 # Genty
 
+[![build](https://img.shields.io/github/workflow/status/drew-k/genty/lint)](https://github.com/drew-k/genty/actions)
 [![CodeFactor](https://www.codefactor.io/repository/github/drew-k/genty/badge)](https://www.codefactor.io/repository/github/drew-k/genty)
 [![Version](https://img.shields.io/github/v/release/drew-k/genty?include_prereleases)](https://github.com/drew-k/genty/releases)
 [![Support Server](https://img.shields.io/discord/960915291502686298)](https://discord.gg/a8qwkJvshH)
