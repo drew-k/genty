@@ -16,8 +16,3 @@ repos:
       - id: isort
         args: ["--profile", "black", "--extend-skip", "examples"]
         name: Running isort in all files.
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1
-    hooks:
-      -id: flake8
