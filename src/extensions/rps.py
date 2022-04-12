@@ -1,12 +1,14 @@
 """ RPS module """
 
+import asyncio
+import random
+
 import disnake
+from disnake import ButtonStyle
 from disnake.ext import commands
 from disnake.ui import Button
-from disnake import ButtonStyle
-import random
-from extensions.custom_vc import load_json, dump_json
-import asyncio
+
+from extensions.custom_vc import dump_json, load_json
 
 choose_weapon = ['Rock', 'Paper', 'Scissors']
 

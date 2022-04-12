@@ -1,10 +1,11 @@
 """ Extension manager slash command """
 
-import os
 import datetime
+import os
+from typing import List
+
 import disnake
 from disnake.ext import commands
-from typing import List
 
 
 class ExtensionManager(commands.Cog):

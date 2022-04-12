@@ -1,11 +1,13 @@
 """ Main bot module """
 
-import os
 import logging
+import os
 from logging.handlers import TimedRotatingFileHandler
+
 import disnake
 from disnake.ext import commands
 from dotenv import load_dotenv
+
 load_dotenv()  # load the environment variable
 
 

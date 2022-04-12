@@ -7,8 +7,8 @@
 
 ## Invite bot to your server
 
-Click [here](https://discord.com/api/oauth2/authorize?client_id=873165810171002881&permissions=8&scope=applications.commands%20bot) 
-to invite this bot to your server. 
+Click [here](https://discord.com/api/oauth2/authorize?client_id=873165810171002881&permissions=8&scope=applications.commands%20bot)
+to invite this bot to your server.
 
 ## Requirements
 
@@ -61,7 +61,7 @@ git pull origin master
 
 ## Finding your Token
 Go to the [Discord Application Page](https://discord.com/developers/applications/) and create a new application. First,
-go to the `Bot` tab and find your token (should be under your Bot name). Next, navigate to the `OAuth2` tab and 
+go to the `Bot` tab and find your token (should be under your Bot name). Next, navigate to the `OAuth2` tab and
 check the following:
 
 * bot
@@ -87,13 +87,13 @@ Commands in `src/extensions/custom_vc.py`:
 |----------------------------------------|------------------|---------------------------------------------------------------------------|
 | /vc_whitelist \<Optional: member\>     | Channel owner    | Whitelists a user to a custom channel                                     |
 | /vc_blacklist \<Optional: member\>     | Channel owner    | Blacklists a user from a custom channel                                   |
-| /vc_limit \<Optional: n\>              | Channel owner    | Sets a user limit of `n` on the custom channel                            | 
+| /vc_limit \<Optional: n\>              | Channel owner    | Sets a user limit of `n` on the custom channel                            |
 | /vc_rename \<Optional: name\>          | Channel owner    | Renames a custom channel to `name`                                        |
 | /vc_lock                               | Channel owner    | Locks a custom channel (whitelisted users can still join)                 |
 | /vc_unlock                             | Channel owner    | Unlocks a custom channel (default setting, blacklisted users cannot join) |
 
 ## Contributing
-We are always looking for new ideas and perspectives for Genty. Feel free to contribute. 
+We are always looking for new ideas and perspectives for Genty. Feel free to contribute.
 
 [Contributors](https://github.com/drew-k/genty/graphs/contributors)
 
