@@ -22,8 +22,8 @@ repos:
         name: Running isort in examples.
         files: ^examples/
 
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
     hooks:
-      - id: black
-        name: Running black in all files.
+      - id: flake8
+        name: Running flake8 in all files.
