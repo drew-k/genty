@@ -106,10 +106,11 @@ class Bot(commands.Bot):
         exception: commands.CommandError
     ):
         """ Executed when a slash command fails """
-        error = f"> %s attempted to use /%s but the interaction failed.\n\tError: %s",
-        interaction.author,
-        interaction.data.name,
-        exception
+        error = (f"> %s attempted to use /%s but the interaction failed.\n\tError: %s",
+                 interaction.author,
+                 interaction.data.name,
+                 exception
+                 )
         print(
             Format.red + error + Format.reset)
         self.logger.error("Slash Command Error: User=%s Guild ID=%d Interaction=%s Exception=%s",
