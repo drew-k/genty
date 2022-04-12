@@ -127,7 +127,7 @@ def main():
     """ Starts the bot """
     bot = Bot()
     bot.init_cogs()
-    bot.run(os.getenv("DEV"))
+    bot.run(os.getenv("TOKEN"))
     bot.logger.critical("Process ended: Bot", extra={"botname": bot.user})
 
 
