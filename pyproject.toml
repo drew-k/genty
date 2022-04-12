@@ -1,0 +1,4 @@
+[tool.isort]
+profile = "black"
+py_version = 39
+line_length = 100

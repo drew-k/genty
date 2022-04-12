@@ -1,13 +1,17 @@
+""" Hidden commands module """
+
 import logging
 from logging.handlers import TimedRotatingFileHandler
+
 import disnake
 from disnake.ext import commands
 
 
 def get_module_logger(module: str):
     """ Return a logger object in the current module """
+    # creates a new log file every night at midnight
     handler = TimedRotatingFileHandler(
-        "logs/bot.log", when="midnight", interval=1)  # creates a new log file every night at midnight
+        "logs/bot.log", when="midnight", interval=1)
     handler.setFormatter(logging.Formatter(
         "%(asctime)s - %(botname)s - %(levelname)s - %(message)s"))
     logger = logging.getLogger(module)
@@ -80,7 +84,9 @@ class HiddenCommands(commands.Cog):
             self.logger.warning("Failed to unload extension \"%s\": %s",
                                 path, exception, extra={"botname": self.bot.user})
         except ModuleNotFoundError as exception:
-            await ctx.author.send(f"Failed to unload extension \"{path}\": try again without suffix.")
+            await ctx.author.send(
+                f"Failed to unload extension \"{path}\": try again without suffix."
+            )
             self.logger.warning("Failed to unload extension \"%s\": %s",
                                 path, exception, extra={"botname": self.bot.user})
 

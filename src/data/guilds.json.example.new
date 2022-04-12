@@ -1,0 +1,13 @@
+{
+	"guild_id_here" : {
+        "extension": {
+            "enabled": T/F,
+            (extension settings)
+        },
+        "extension": {
+			"enabled": T/F
+			...
+		},
+        ...
+	}
+}
