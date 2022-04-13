@@ -60,10 +60,10 @@ class Help(commands.Cog):
                 self.prev_page.disabled = True
             await interaction.response.edit_message(embed=embed, view=self)
 
-        @disnake.ui.button(emoji="❌", style=disnake.ButtonStyle.red)
+        @disnake.ui.button(emoji="✖️", style=disnake.ButtonStyle.red)
         async def remove(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
             """ Removes the pagination """
-            await interaction.response.edit_message(view=None)
+            await interaction.response.edit_message(components=[])
 
         @disnake.ui.button(emoji="▶", style=disnake.ButtonStyle.secondary)
         async def next_page(
@@ -113,11 +113,21 @@ class Help(commands.Cog):
                 description=slash_command.description,
                 timestamp=datetime.datetime.now(),
             )
+            embed.set_author(
+                name=f'Help requested by {inter.author.display_name}',
+                icon_url=inter.author.display_avatar.url
+                )
+            embed.set_thumbnail(
+                url=self.client.user.avatar.url
+                )
             if command == slash_command.name:  # check if there is a specific command requested
                 embeds.insert(0, embed)
             else:
                 embeds.append(embed)
-        await inter.send(embed=embeds[0], view=self.Menu(embeds))
+        await inter.send(
+            embed=embeds[0], 
+            view=self.Menu(embeds)
+            )
 
 
 def setup(client):

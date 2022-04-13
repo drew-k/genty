@@ -59,7 +59,7 @@ class ExtensionManager(commands.Cog):
                 self.prev_page.disabled = True
             await interaction.response.edit_message(embed=embed, view=self)
 
-        @disnake.ui.button(emoji="❌", style=disnake.ButtonStyle.red)
+        @disnake.ui.button(emoji="✖️", style=disnake.ButtonStyle.red)
         async def remove(self, button: disnake.ui.Button, interaction: disnake.MessageInteraction):
             """ Removes the pagination """
             await interaction.response.edit_message(view=None)
