@@ -1,8 +1,6 @@
 """ RPS module """
-
 import asyncio
 import random
-from time import sleep
 import disnake
 from disnake import ButtonStyle
 from disnake.ext import commands
@@ -63,7 +61,7 @@ async def get_stats(
     self,
     inter: disnake.ApplicationCommandInteraction,
     bot_name: str
-)-> disnake.Embed:
+) -> disnake.Embed:
     """ Get the stats of the player using RPS command """
     rps_json = load_json(self.jsonpath)
     if str(inter.author.id) not in rps_json:
@@ -93,12 +91,13 @@ async def get_stats(
         stats_embed.set_footer(text=bot_name, icon_url=self.bot.user.avatar.url)
         return stats_embed
 
+
 async def rps_game(
     self,
     inter: disnake.ApplicationCommandInteraction,
     bot_name: str,
     is_rematch: bool
-    ) -> None:
+) -> None:
     """ Function to play the RPS game with the bot """
 
     yet = disnake.Embed(
@@ -112,10 +111,9 @@ async def rps_game(
         color=disnake.Color.red()
     )
     match_components = [
-            Button(style=ButtonStyle.blurple, label='Rock', emoji="\u270A"),
-            Button(style=ButtonStyle.green, label='Paper', emoji='\u270B'),
-            Button(style=ButtonStyle.red, label='Scissors', emoji='\u270C')
-            ]
+        Button(style=ButtonStyle.blurple, label='Rock', emoji="\u270A"),
+        Button(style=ButtonStyle.green, label='Paper', emoji='\u270B'),
+        Button(style=ButtonStyle.red, label='Scissors', emoji='\u270C')]
     if is_rematch is False:
         await inter.send(
             embed=yet,
@@ -187,6 +185,7 @@ async def rps_game(
             components=[]
         )
 
+
 class RPS(commands.Cog):
     """ Set up basic slash commands """
 
@@ -206,18 +205,17 @@ class RPS(commands.Cog):
             await inter.send(embed=stats_embed)
         else:
             await rps_game(self, inter, bot_name, False)
-        
         loopclose = 0
         while loopclose == 0:
             try:
                 res = disnake.MessageInteraction = await self.bot.wait_for(
-                'button_click',
-                check = lambda i:i.author.id == inter.author.id,
-                timeout=10)
+                    'button_click',
+                    check=lambda i: i.author.id == inter.author.id,
+                    timeout=10)
             except asyncio.TimeoutError:
                 await inter.edit_original_message(
-                components=[]
-            )
+                    components=[]
+                )
             if res.component.label == 'Rematch':
                 await res.response.defer()
                 await rps_game(self, inter, bot_name, True)
@@ -225,6 +223,7 @@ class RPS(commands.Cog):
                 await res.response.edit_message(components=[])
                 loopclose = 1
                 break
+
 
 def setup(client):
     client.add_cog(RPS(client))
