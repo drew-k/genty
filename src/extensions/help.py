@@ -115,19 +115,16 @@ class Help(commands.Cog):
             )
             embed.set_author(
                 name=f'Help requested by {inter.author.display_name}',
-                icon_url=inter.author.display_avatar.url
-                )
+                icon_url=inter.author.display_avatar.url)
             embed.set_thumbnail(
-                url=self.client.user.avatar.url
-                )
+                url=self.client.user.avatar.url)
             if command == slash_command.name:  # check if there is a specific command requested
                 embeds.insert(0, embed)
             else:
                 embeds.append(embed)
         await inter.send(
-            embed=embeds[0], 
-            view=self.Menu(embeds)
-            )
+            embed=embeds[0],
+            view=self.Menu(embeds))
 
 
 def setup(client):
