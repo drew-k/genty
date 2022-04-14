@@ -1,5 +1,5 @@
 """ Hidden commands module """
-
+import datetime
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
@@ -89,6 +89,36 @@ class HiddenCommands(commands.Cog):
             )
             self.logger.warning("Failed to unload extension \"%s\": %s",
                                 path, exception, extra={"botname": self.bot.user})
+
+    @commands.command(description="View guilds for client with invites", hidden=True)
+    @commands.is_owner()
+    async def listguilds(self, ctx):
+        await ctx.message.delete()
+        guilds_embed = disnake.Embed(
+            title=f'{self.bot.user.name } is in {len(self.bot.guilds)} guilds',
+            description='\u200b',
+            color=disnake.Color.dark_teal(),
+            timestamp=datetime.datetime.now()
+        )
+        guilds_embed.set_thumbnail(url=self.bot.user.avatar.url)
+        for guild in self.bot.guilds:
+            for channel in guild.channels:
+                try:
+                    invite_link = await channel.create_invite(
+                        max_age=60,
+                        temporary=True)
+                    break
+                except disnake.NotFound:
+                    continue
+            guilds_embed.add_field(
+                name=f'{guild.name}: {len(guild.members)} members',
+                value='Guild ID `{}`\nOwner: `{}#{}`\nInvite: {}'.format(
+                    guild.id,
+                    guild.owner.name,
+                    guild.owner.tag,
+                    invite_link.url),
+                inline=False)
+        await ctx.author.send(embed=guilds_embed)
 
 
 def setup(client):
