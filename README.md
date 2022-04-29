@@ -17,7 +17,6 @@ To self-host, you will need the following:
 * [python](https://www.python.org/downloads/)
 * [git](https://git-scm.com/downloads)
 * [disnake](https://github.com/DisnakeDev/disnake)
-* [python-dotenv](https://github.com/theskumar/python-dotenv)
 
 **python** comes preinstalled on some operating systems.
 
