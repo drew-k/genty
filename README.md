@@ -26,13 +26,13 @@ To self-host, you will need the following:
 Clone repository
 
 ```text
-git clone https://github.com/drew-k/genty.git
+$ git clone https://github.com/drew-k/genty.git
 ```
 
 Install modules in requirements.txt
 
 ```text
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 Create an environment variable with your bot's token:
@@ -42,13 +42,13 @@ Create an environment variable with your bot's token:
 set TOKEN=[your_token_here]
 
 // Linux & MacOS
-export TOKEN=[your_token_here]
+$ export TOKEN=[your_token_here]
 ```
 
 Start the bot
 ```text
-cd src
-python bot.py
+$ cd src
+$ python3 bot.py
 ```
 
 ## Updating
@@ -56,7 +56,7 @@ python bot.py
 To update:
 
 ```text
-git pull origin master
+$ git pull origin master
 ```
 
 ## Finding your Token
