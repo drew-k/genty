@@ -69,6 +69,8 @@ check the following:
 
 ## Usage
 
+WARNING: Genty is still early in development. Some commands may not work as intended. If you run into an error, please create an issue and we will look into it. 
+
 List of commands:
 
 | Command                     | Permission       | Description                          |
