@@ -55,7 +55,7 @@ $ python3 bot.py
 To update:
 
 ```text
-$ git pull origin master
+$ git pull origin main
 ```
 
 ## Finding your Token
