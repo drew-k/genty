@@ -7,7 +7,7 @@ from disnake import ButtonStyle
 from disnake.ext import commands
 from disnake.ui import Button
 
-from extensions.custom_vc import dump_json, load_json
+from utils.json_utils import load_json, dump_json
 
 choose_weapon = ["Rock", "Paper", "Scissors"]
 
