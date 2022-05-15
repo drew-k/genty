@@ -1,0 +1,7 @@
+{
+    "guild_id_str": {
+        "enabled": bool,
+        "cat": cat_id_str,
+        "chan": chan_id_str, 
+    },
+}

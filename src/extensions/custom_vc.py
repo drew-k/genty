@@ -5,15 +5,15 @@ from random import randint
 
 import disnake
 from disnake.ext import commands
-
+# Todo: refactor every instance of json interaction to the new format
 
 class CustomVC(commands.Cog):
     """ Lets users create their own customizable voice channels """
 
     def __init__(self, client):
         self.client = client
-        self.jsonpath: str = "data/guilds"
-        self.channelpath: str = "data/channels"
+        self.json: str = f"data/{__name__}"
+        self.channelpath: str = "data/{__name__}-channels"
 
     class VoiceNotConnected(Exception):
         """ Thrown if the author of a command is not in a custom channel """
@@ -200,7 +200,7 @@ class CustomVC(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         """ Listen for movement between custom voice channels """
 
-        guilds_json = load_json(self.jsonpath)
+        guilds_json = load_json(self.json)
 
         # Check setup
         if str(member.guild.id) not in guilds_json:
@@ -210,7 +210,7 @@ class CustomVC(commands.Cog):
                 channel = await category.create_voice_channel(name="Click to Create")
                 guilds_json[str(member.guild.id)]["cat"] = category.id
                 guilds_json[str(member.guild.id)]["chan"] = channel.id
-                dump_json(self.jsonpath, guilds_json)
+                dump_json(self.json, guilds_json)
 
         channels = load_json(self.channelpath)
         if str(member.guild.id) not in channels:
@@ -264,7 +264,7 @@ class CustomVC(commands.Cog):
     @commands.Cog.listener("on_connect")
     async def on_connect(self):
         """ Check for any channel changes while offline """
-        guilds_json = load_json(self.jsonpath)
+        guilds_json = load_json(self.json)
         for guild in self.client.guilds:
             category: disnake.CategoryChannel = None
             channel: disnake.VoiceChannel = None
@@ -279,7 +279,7 @@ class CustomVC(commands.Cog):
                     channel = await category.create_voice_channel(name="Click to Create")
                     guilds_json[str(guild.id)]["cat"] = category.id
                     guilds_json[str(guild.id)]["chan"] = channel.id
-                dump_json(self.jsonpath, guilds_json)
+                dump_json(self.json, guilds_json)
             elif str(guild.id) in guilds_json:
                 str_guild_id = str(guild.id)
                 try:
@@ -293,12 +293,12 @@ class CustomVC(commands.Cog):
                 await channel.move(category=category, beginning=True)
                 guilds_json[str(guild.id)]["cat"] = category.id
                 guilds_json[str(guild.id)]["chan"] = channel.id
-                dump_json(self.jsonpath, guilds_json)
+                dump_json(self.json, guilds_json)
 
     @commands.Cog.listener("on_ready")
     async def on_ready(self):
         """ Execute setup for custom voice channels """
-        guilds_json = load_json(self.jsonpath)
+        guilds_json = load_json(self.json)
         for guild in self.client.guilds:
             if str(guild.id) not in guilds_json:
                 guilds_json[str(guild.id)] = {}
@@ -306,19 +306,19 @@ class CustomVC(commands.Cog):
                 channel = await category.create_voice_channel(name="Click to Create")
                 guilds_json[str(guild.id)]["cat"] = category.id
                 guilds_json[str(guild.id)]["chan"] = channel.id
-                dump_json(self.jsonpath, guilds_json)
+                dump_json(self.json, guilds_json)
 
     @commands.Cog.listener("on_guild_join")
     async def on_guild_join(self, guild):
         """ Setup voice channels """
-        guilds_json = load_json(self.jsonpath)
+        guilds_json = load_json(self.json)
         if str(guild.id) not in guilds_json:
             guilds_json[str(guild.id)] = {}
             category = await guild.create_category_channel(name="Custom Voice Channels")
             channel = await category.create_voice_channel(name="Click to Create")
             guilds_json[str(guild.id)]["cat"] = category.id
             guilds_json[str(guild.id)]["chan"] = channel.id
-            dump_json(self.jsonpath, guilds_json)
+            dump_json(self.json, guilds_json)
 
 
 def setup(client):

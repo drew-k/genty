@@ -1,2 +1,4 @@
-channels.json
-guilds.json
+*
+!extensions.custom_vc-channels.json.example
+!extensions.custom_vc.json.example
+!rps.json.example
